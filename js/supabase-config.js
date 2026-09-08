@@ -9,5 +9,5 @@
 
 window.SUPABASE_CONFIG = {
     url: "https://colbbkkhdkclbnjeqhwq.supabase.co",
-    anonKey: "COLE_AQUI_A_PUsb_publishable_19vZRsdbeClPunkP30O4fA_8vOespFW"
+    anonKey: "sb_publishable_19vZRsdbeClPunkP30O4fA_8vOespFW"
 };
