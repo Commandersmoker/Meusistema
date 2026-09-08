@@ -237,6 +237,39 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    lucide.createIcons();
+
+    const campoSenha = document.getElementById("senha");
+    const botao = document.getElementById("toggleSenha");
+
+    if (!campoSenha || !botao) return;
+
+    botao.addEventListener("click", function () {
+
+        const mostrar = campoSenha.type === "password";
+
+        campoSenha.type = mostrar ? "text" : "password";
+
+        botao.innerHTML = mostrar
+            ? '<i data-lucide="eye-off"></i>'
+            : '<i data-lucide="eye"></i>';
+
+        botao.setAttribute(
+            "aria-label",
+            mostrar ? "Ocultar senha" : "Mostrar senha"
+        );
+
+        lucide.createIcons();
+    });
+
+});
+</script>
 </script>
 
     <!-- =========================================
