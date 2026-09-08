@@ -194,7 +194,50 @@
         </section>
 
     </main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    const senha = document.getElementById("senha");
+    const botao = document.getElementById("toggleSenha");
+
+    if (!senha || !botao) {
+        return;
+    }
+
+    botao.addEventListener("click", function () {
+
+        const estaOculta = senha.type === "password";
+
+        senha.type = estaOculta
+            ? "text"
+            : "password";
+
+        botao.innerHTML = estaOculta
+            ? '<i data-lucide="eye-off"></i>'
+            : '<i data-lucide="eye"></i>';
+
+        botao.setAttribute(
+            "aria-label",
+            estaOculta
+                ? "Ocultar senha"
+                : "Mostrar senha"
+        );
+
+        botao.setAttribute(
+            "title",
+            estaOculta
+                ? "Ocultar senha"
+                : "Mostrar senha"
+        );
+
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+    });
+
+});
+</script>
 
     <!-- =========================================
          BANCO DE DADOS
