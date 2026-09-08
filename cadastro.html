@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <title>Criar conta | Marcelino Bordados</title>
+
+    <link
+        rel="stylesheet"
+        href="css/cadastro.css"
+    >
+
+</head>
+
+<body>
+
+    <main class="cadastro-container">
+
+        <section class="cadastro-card">
+
+            <!-- MARCA -->
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    M
+                </div>
+
+                <div class="brand-name">
+
+                    <strong>
+                        Marcelino
+                    </strong>
+
+                    <span>
+                        Bordados
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- CABEÇALHO -->
+
+            <div class="cadastro-header">
+
+                <h1>
+                    Criar sua conta
+                </h1>
+
+                <p>
+                    Cadastre seus dados para acessar o sistema.
+                </p>
+
+            </div>
+
+
+            <!-- FORMULÁRIO -->
+
+            <form id="cadastroForm">
+
+                <div class="form-group">
+
+                    <label for="nome">
+                        Nome completo
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nome"
+                        placeholder="Ex.: Iandro Marcelino"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="usuario">
+                        Nome de usuário
+                    </label>
+
+                    <input
+                        type="text"
+                        id="usuario"
+                        placeholder="Ex.: iandro"
+                        autocomplete="username"
+                        required
+                    >
+
+                    <small>
+                        Use apenas letras, números, ponto,
+                        traço ou underline.
+                    </small>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        E-mail
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="seuemail@email.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="senha">
+                        Senha
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="senha"
+                            placeholder="Crie uma senha"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            id="mostrarSenha"
+                        >
+                            Mostrar
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="confirmarSenha">
+                        Confirmar senha
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="confirmarSenha"
+                            placeholder="Digite a senha novamente"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            id="mostrarConfirmarSenha"
+                        >
+                            Mostrar
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ERRO -->
+
+                <div
+                    id="mensagemErro"
+                    class="error-message"
+                ></div>
+
+
+                <!-- SUCESSO -->
+
+                <div
+                    id="mensagemSucesso"
+                    class="success-message"
+                ></div>
+
+
+                <button
+                    type="submit"
+                    class="cadastro-button"
+                    id="btnCadastrar"
+                >
+                    Criar minha conta
+                </button>
+
+            </form>
+
+
+            <!-- VOLTAR -->
+
+            <div class="login-link">
+
+                Já possui uma conta?
+
+                <a href="login.html">
+                    Fazer login
+                </a>
+
+            </div>
+
+
+            <!-- RODAPÉ -->
+
+            <div class="cadastro-footer">
+
+                Marcelino Bordados © 2026
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="js/supabase-config.js?v=18"></script>
+    <script src="js/online.js?v=18"></script>
+    <script src="js/database.js?v=18"></script>
+    <script src="js/cadastro.js?v=18"></script>
+
+</body>
+
+</html>

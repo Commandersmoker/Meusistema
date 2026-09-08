@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Configurações | Marcelino Bordados</title><link rel="stylesheet" href="css/style.css?v=18">
+</head>
+<body>
+<div class="app">
+<aside class="sidebar"><div class="logo"><div class="logo-icon">A</div><div><h1>Marcelino</h1><span>Bordados</span></div></div>
+<nav class="menu"><a href="index.html" class="menu-item"><span>⌂</span><span>Dashboard</span></a><a href="vendas.html" class="menu-item"><span>🛒</span><span>Vendas</span></a><a href="produtos.html" class="menu-item"><span>📦</span><span>Estoque</span></a><a href="clientes.html" class="menu-item"><span>👥</span><span>Clientes</span></a><a href="caixa.html" class="menu-item"><span>💰</span><span>Caixa</span></a><a href="relatorios.html" class="menu-item"><span>📊</span><span>Relatórios</span></a></nav>
+<div class="sidebar-bottom"><a href="configuracoes.html" class="menu-item active"><span>⚙️</span><span>Configurações</span></a><div class="system-version">Versão 1.0.0</div></div></aside>
+<main class="main"><header class="topbar"><div><h2>Configurações</h2><p>Dados exibidos no sistema e nos documentos</p></div></header>
+<section class="panel"><div class="panel-header"><div><h3>Empresa</h3><p>Atualize as informações do seu negócio.</p></div></div>
+<form id="configForm" class="form-grid" style="padding:20px"><div class="form-group"><label for="nome">Nome da empresa</label><input id="nome" required></div><div class="form-group"><label for="telefone">Telefone</label><input id="telefone"></div><div class="form-group"><label for="email">E-mail</label><input id="email" type="email"></div><div class="form-group"><label for="documento">CPF/CNPJ</label><input id="documento"></div><div class="form-group" style="grid-column:1/-1"><label for="endereco">Endereço</label><input id="endereco"></div><div class="form-group"><label for="usuario">Usuário</label><input id="usuario"></div><div class="form-group"><label for="cor">Cor principal</label><input id="cor" type="color" value="#7c3aed" style="height:42px;padding:4px"></div><div style="grid-column:1/-1;display:flex;justify-content:flex-end"><button class="primary-button" type="submit">Salvar configurações</button></div></form></section>
+<footer><span>Marcelino Bordados © 2026</span><span>Sistema local</span></footer></main></div>
+<script src="js/supabase-config.js?v=18"></script>
+<script src="js/online.js?v=18"></script>
+<script src="js/database.js?v=18"></script><script src="js/configuracoes.js"></script>
+    <script src="js/ui.js?v=18"></script>
+</body></html>

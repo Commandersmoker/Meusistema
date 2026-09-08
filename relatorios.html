@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Relatórios | Marcelino Bordados</title>
+    <link rel="stylesheet" href="css/style.css?v=18">
+</head>
+<body>
+
+    <aside class="sidebar"></aside>
+
+    <main class="main reports-standard">
+
+        <header class="topbar">
+            <div>
+                <h2>Relatórios</h2>
+                <p>Análise dos resultados da sua empresa</p>
+            </div>
+
+            <div class="topbar-actions">
+                <button class="secondary-button" type="button" onclick="window.print()">
+                    Imprimir
+                </button>
+            </div>
+        </header>
+
+        <section class="panel report-period-panel">
+            <div class="panel-header report-period-header">
+                <div>
+                    <h3>Período do relatório</h3>
+                    <p>Selecione o período que deseja analisar</p>
+                </div>
+
+                <div class="report-period-controls">
+                    <div class="report-period-field">
+                        <label for="relatorioDataInicial">Data inicial</label>
+                        <input type="date" id="relatorioDataInicial">
+                    </div>
+
+                    <div class="report-period-field">
+                        <label for="relatorioDataFinal">Data final</label>
+                        <input type="date" id="relatorioDataFinal">
+                    </div>
+
+                    <button class="primary-button report-generate-standard" type="button" onclick="gerarRelatorio()">
+                        Gerar relatório
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats report-stats-standard">
+            <div class="stat-card">
+                <div class="stat-icon sales"></div>
+                <div class="stat-content">
+                    <span>Faturamento</span>
+                    <strong id="relatorioFaturamento">R$ 0,00</strong>
+                    <small>Somente vendas recebidas no período</small>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon stock"></div>
+                <div class="stat-content">
+                    <span>Vendas</span>
+                    <strong id="relatorioVendas">0</strong>
+                    <small>Vendas realizadas</small>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon revenue"></div>
+                <div class="stat-content">
+                    <span>Ticket médio</span>
+                    <strong id="relatorioTicket">R$ 0,00</strong>
+                    <small>Média por venda</small>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon stock"></div>
+                <div class="stat-content">
+                    <span>Produtos vendidos</span>
+                    <strong id="relatorioProdutos">0</strong>
+                    <small>Unidades vendidas</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-grid report-ranking-standard-grid">
+            <div class="panel report-ranking-standard-card">
+                <div class="panel-header">
+                    <div>
+                        <h3>Produtos mais vendidos</h3>
+                        <p>Produtos com maior quantidade de vendas</p>
+                    </div>
+                    <div class="stat-icon stock report-header-icon"></div>
+                </div>
+                <div id="produtosMaisVendidos" class="ranking-list report-ranking-standard-list">
+                    <div class="ranking-empty">
+                        <div class="ranking-empty-icon">—</div>
+                        <strong>Nenhuma venda encontrada</strong>
+                        <span>Os produtos mais vendidos aparecerão aqui.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel report-ranking-standard-card">
+                <div class="panel-header">
+                    <div>
+                        <h3>Clientes destaque</h3>
+                        <p>Clientes que mais compraram</p>
+                    </div>
+                    <div class="stat-icon clients report-header-icon"></div>
+                </div>
+                <div id="clientesDestaque" class="ranking-list report-ranking-standard-list">
+                    <div class="ranking-empty">
+                        <div class="ranking-empty-icon">—</div>
+                        <strong>Nenhuma compra encontrada</strong>
+                        <span>Os clientes em destaque aparecerão aqui.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel report-financial-standard">
+            <div class="panel-header">
+                <div>
+                    <h3>Resumo financeiro</h3>
+                    <p>Entradas e saídas registradas no período</p>
+                </div>
+            </div>
+
+            <div class="cash-grid report-financial-grid-standard">
+                <div class="cash-item">
+                    <span>Entradas</span>
+                    <strong id="relatorioEntradas">R$ 0,00</strong>
+                    <small>Valores recebidos</small>
+                </div>
+
+                <div class="cash-item">
+                    <span>Saídas</span>
+                    <strong id="relatorioSaidas">R$ 0,00</strong>
+                    <small>Despesas registradas</small>
+                </div>
+
+                <div class="cash-item">
+                    <span>Saldo</span>
+                    <strong id="relatorioSaldo">R$ 0,00</strong>
+                    <small>Resultado do período</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel report-sales-standard">
+            <div class="panel-header">
+                <div>
+                    <h3>Vendas do período</h3>
+                    <p>Vendas registradas no período selecionado</p>
+                </div>
+                <span class="report-count-standard" id="relatorioContagemVendas">0 vendas</span>
+            </div>
+
+            <div class="table-container">
+                <table class="report-table-standard">
+                    <thead>
+                        <tr>
+                            <th>Comanda</th>
+                            <th>Cliente</th>
+                            <th>Data</th>
+                            <th>Pagamento</th>
+                            <th>Produtos</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="relatorioListaVendas">
+                        <tr>
+                            <td colspan="6" class="report-table-empty">
+                                <div class="report-table-empty-state">
+                                    <strong>Nenhuma venda encontrada</strong>
+                                    <span>Altere o período do relatório para consultar outras vendas.</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            <span>Marcelino Bordados © 2026</span>
+            <span>Sistema local</span>
+        </footer>
+    </main>
+
+    <script src="js/supabase-config.js?v=18"></script>
+<script src="js/online.js?v=18"></script>
+<script src="js/database.js?v=18"></script>
+    <script src="js/relatorios.js"></script>
+    <script src="js/ui.js?v=18"></script>
+</body>
+</html>

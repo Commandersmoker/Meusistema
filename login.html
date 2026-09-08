@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <title>
+        Login | Marcelino Bordados
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/login.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main class="login-container">
+
+        <section class="login-card">
+
+            <!-- =====================================
+                 LOGO
+                 ===================================== -->
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    M
+                </div>
+
+                <div class="brand-name">
+
+                    <strong>
+                        Marcelino
+                    </strong>
+
+                    <span>
+                        Bordados
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 CABEÇALHO
+                 ===================================== -->
+
+            <div class="login-header">
+
+                <h1>
+                    Bem-vindo!
+                </h1>
+
+                <p>
+                    Entre com seu e-mail para acessar os mesmos dados em qualquer dispositivo.
+                </p>
+
+            </div>
+
+
+            <!-- =====================================
+                 FORMULÁRIO DE LOGIN
+                 ===================================== -->
+
+            <form id="loginForm">
+
+                <!-- USUÁRIO -->
+
+                <div class="form-group">
+
+                    <label for="usuario">
+                        E-mail
+                    </label>
+
+                    <input
+                        type="email"
+                        id="usuario"
+                        name="usuario"
+                        placeholder="seuemail@email.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- SENHA -->
+
+                <div class="form-group">
+
+                    <label for="senha">
+                        Senha
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="senha"
+                            name="senha"
+                            placeholder="Digite sua senha"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="mostrarSenha"
+                            class="show-password"
+                            aria-label="Mostrar senha"
+                        >
+                            Mostrar
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     MENSAGEM DE ERRO
+                     ================================= -->
+
+                <div
+                    id="mensagemErro"
+                    class="error-message"
+                ></div>
+
+
+                <!-- =================================
+                     BOTÃO ENTRAR
+                     ================================= -->
+
+                <button
+                    type="submit"
+                    class="login-button"
+                    id="btnEntrar"
+                >
+                    Entrar
+                </button>
+
+            </form>
+
+
+            <!-- =====================================
+                 CADASTRO
+                 ===================================== -->
+
+            <div class="cadastro-link">
+
+                <span>
+                    Ainda não possui uma conta?
+                </span>
+
+                <a href="cadastro.html">
+                    Criar minha conta
+                </a>
+
+            </div>
+
+
+            <!-- =====================================
+                 RODAPÉ
+                 ===================================== -->
+
+            <div class="login-footer">
+
+                <span>
+                    Marcelino Bordados © 2026
+                </span>
+
+                <span>
+                    Sistema de Gestão
+                </span>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         BANCO DE DADOS
+         DEVE SER CARREGADO PRIMEIRO
+         ========================================= -->
+
+    <script src="js/supabase-config.js?v=18"></script>
+    <script src="js/online.js?v=18"></script>
+    <script src="js/database.js?v=18"></script>
+
+
+    <!-- =========================================
+         SISTEMA DE LOGIN
+         ========================================= -->
+
+    <script src="js/login.js?v=18"></script>
+
+</body>
+
+</html>

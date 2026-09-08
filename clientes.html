@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <title>Clientes | Marcelino Bordados</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css?v=18"
+    >
+
+</head>
+
+<body>
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                A
+            </div>
+
+            <div>
+
+                <h1>Marcelino</h1>
+
+                <span>
+                    Bordados
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu">
+
+            <a
+                href="index.html"
+                class="menu-item"
+            >
+                <span>⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+
+            <a
+                href="vendas.html"
+                class="menu-item"
+            >
+                <span>🛒</span>
+                <span>Vendas</span>
+            </a>
+
+
+            <a
+                href="produtos.html"
+                class="menu-item"
+            >
+                <span>📦</span>
+                <span>Estoque</span>
+            </a>
+
+
+            <a
+                href="clientes.html"
+                class="menu-item active"
+            >
+                <span>👥</span>
+                <span>Clientes</span>
+            </a>
+
+
+            <a
+                href="caixa.html"
+                class="menu-item"
+            >
+                <span>💰</span>
+                <span>Caixa</span>
+            </a>
+
+
+            <a
+                href="relatorios.html"
+                class="menu-item"
+            >
+                <span>📊</span>
+                <span>Relatórios</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="#"
+                class="menu-item"
+            >
+                <span>⚙️</span>
+                <span>Configurações</span>
+            </a>
+
+
+            <div class="system-version">
+                Versão 1.0.0
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h2>
+                    Clientes
+                </h2>
+
+                <p>
+                    Cadastro e relacionamento com clientes
+                </p>
+
+            </div>
+
+
+            <div class="topbar-actions header-create-actions">
+
+                <button
+                    type="button"
+                    class="primary-button header-create-button"
+                    onclick="abrirModalCliente()"
+                >
+                    <span class="header-create-label">+ Novo cliente</span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =========================
+             ESTATÍSTICAS
+        ========================== -->
+
+        <section class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon clients">
+                    👥
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Total de clientes
+                    </span>
+
+                    <strong id="totalClientesPagina">
+                        0
+                    </strong>
+
+                    <small>
+                        Clientes cadastrados
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon revenue">
+                    💰
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Total em vendas
+                    </span>
+
+                    <strong id="totalVendasClientes">
+                        R$ 0,00
+                    </strong>
+
+                    <small>
+                        Vendas vinculadas
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon sales">
+                    🛒
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Compras realizadas
+                    </span>
+
+                    <strong id="quantidadeComprasClientes">
+                        0
+                    </strong>
+
+                    <small>
+                        Vendas registradas
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon stock">
+                    ⭐
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Cliente destaque
+                    </span>
+
+                    <strong
+                        id="clienteDestaque"
+                        class="customer-highlight"
+                    >
+                        —
+                    </strong>
+
+                    <small>
+                        Maior volume de compras
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             CONTROLE FINANCEIRO DO CLIENTE
+        ========================== -->
+        <section class="customer-finance-panel">
+            <div class="customer-finance-header">
+                <div><span class="section-eyebrow">Financeiro</span><h3>Consultar pagamentos por cliente</h3><p>Pesquise um cliente para conferir o total comprado, quanto já pagou e quanto ainda falta pagar.</p></div>
+                <div class="customer-finance-search"><input type="search" id="buscarFinanceiroCliente" placeholder="Buscar por nome, CPF/CNPJ, telefone ou e-mail..."></div>
+            </div>
+            <div id="resultadoFinanceiroClientes" class="customer-finance-results"><div class="customer-finance-empty">Digite o nome ou os dados do cliente para consultar a situação financeira.</div></div>
+        </section>
+
+        <!-- =========================
+             LISTA DE CLIENTES
+        ========================== -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h3>
+                        Clientes cadastrados
+                    </h3>
+
+                    <p>
+                        Gerencie os dados dos seus clientes
+                    </p>
+
+                </div>
+
+
+                <div class="search-box">
+
+                    <input
+                        type="text"
+                        id="buscarCliente"
+                        placeholder="🔎 Buscar cliente..."
+                        oninput="listarClientes()"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Cliente
+                            </th>
+
+                            <th>
+                                CPF/CNPJ
+                            </th>
+
+                            <th>
+                                Telefone
+                            </th>
+
+                            <th>
+                                E-mail
+                            </th>
+
+                            <th>
+                                Compras
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                            <th>
+                                Cadastro
+                            </th>
+
+                            <th>
+                                Ações
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="listaClientes">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             RODAPÉ
+        ========================== -->
+
+        <footer>
+
+            <span>
+                Marcelino Bordados © 2026
+            </span>
+
+            <span>
+                Sistema local
+            </span>
+
+        </footer>
+
+    </main>
+
+
+
+    <!-- =========================
+         MODAL CLIENTE
+    ========================== -->
+
+    <div
+        id="modalCliente"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h3 id="tituloModalCliente">
+                        Novo cliente
+                    </h3>
+
+                    <p>
+                        Preencha os dados do cliente
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="close-button"
+                    onclick="fecharModalCliente()"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <form
+                id="formCliente"
+                onsubmit="salvarCliente(event)"
+            >
+
+                <input
+                    type="hidden"
+                    id="clienteId"
+                >
+
+
+                <div class="form-grid">
+
+
+                    <!-- NOME -->
+
+                    <div class="form-group full-width">
+
+                        <label>
+                            Nome completo
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clienteNome"
+                            placeholder="Ex: João da Silva"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CPF -->
+
+                    <div class="form-group">
+
+                        <label>
+                            CPF/CNPJ
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clienteDocumento"
+                            placeholder="Opcional"
+                        >
+
+                    </div>
+
+
+                    <!-- TELEFONE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Telefone / WhatsApp
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clienteTelefone"
+                            placeholder="(00) 00000-0000"
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group full-width">
+
+                        <label>
+                            E-mail
+                        </label>
+
+                        <input
+                            type="email"
+                            id="clienteEmail"
+                            placeholder="cliente@email.com"
+                        >
+
+                    </div>
+
+
+                    <!-- CEP -->
+
+                    <div class="form-group">
+
+                        <label>
+                            CEP
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clienteCep"
+                            placeholder="00000-000"
+                        >
+
+                    </div>
+
+
+                    <!-- CIDADE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Cidade
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clienteCidade"
+                            placeholder="Cidade"
+                        >
+
+                    </div>
+
+
+                    <!-- ENDEREÇO -->
+
+                    <div class="form-group full-width">
+
+                        <label>
+                            Endereço
+                        </label>
+
+                        <input
+                            type="text"
+                            id="clienteEndereco"
+                            placeholder="Rua, número, bairro..."
+                        >
+
+                    </div>
+
+
+                    <!-- OBSERVAÇÕES -->
+
+                    <div class="form-group full-width">
+
+                        <label>
+                            Observações
+                        </label>
+
+                        <textarea
+                            id="clienteObservacoes"
+                            rows="4"
+                            placeholder="Informações adicionais..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        onclick="fecharModalCliente()"
+                    >
+                        Cancelar
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Salvar cliente
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         MODAL DETALHES
+    ========================== -->
+
+    <div
+        id="modalDetalhesCliente"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h3 id="detalhesNome">
+                        Cliente
+                    </h3>
+
+                    <p>
+                        Informações do cliente
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="close-button"
+                    onclick="fecharDetalhesCliente()"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <div
+                id="detalhesCliente"
+                class="customer-details"
+            >
+
+            </div>
+
+
+
+            <div class="modal-actions">
+
+                <button
+                    class="secondary-button"
+                    onclick="fecharDetalhesCliente()"
+                >
+                    Fechar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="js/supabase-config.js?v=18"></script>
+<script src="js/online.js?v=18"></script>
+<script src="js/database.js?v=18"></script>
+    <script src="js/clientes.js"></script>
+
+    <script src="js/ui.js?v=18"></script>
+</body>
+
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <title>Nova Venda | Marcelino Bordados</title>
+    <link rel="stylesheet" href="css/style.css?v=18">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar preenchida automaticamente pelo ui.js -->
+    <aside class="sidebar" aria-label="Menu principal"></aside>
+
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" aria-hidden="true"></div>
+
+    <main class="main-content">
+
+        <!-- CABEÇALHO -->
+        <header class="page-header sale-page-header">
+
+            <div class="page-title-wrap">
+                <button
+                    type="button"
+                    class="mobile-menu-button"
+                    id="mobileMenuButton"
+                    aria-label="Abrir menu"
+                    aria-expanded="false"
+                >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <path d="M4 7h16M4 12h16M4 17h16"></path>
+                    </svg>
+                </button>
+
+                <div>
+                    <h1>Nova Venda</h1>
+                    <p>Registre uma nova venda ou comanda.</p>
+                </div>
+            </div>
+
+            <div class="sale-header-actions">
+                <div class="sale-number">
+                    <span>Comanda</span>
+                    <strong id="numeroComanda">000001</strong>
+                </div>
+
+                <!-- ui.js substitui esta área pelos dados do usuário -->
+                <div class="user-area"></div>
+            </div>
+
+        </header>
+
+        <nav class="sales-view-switcher" aria-label="Navegação de vendas">
+            <button type="button" class="sales-view-button active" id="btnNovaVendaView" onclick="mostrarTelaVendas('nova')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+                Nova venda
+            </button>
+            <button type="button" class="sales-view-button" id="btnHistoricoVendaView" onclick="mostrarTelaVendas('historico')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5M12 7v5l3 2"></path></svg>
+                Todas as vendas
+            </button>
+        </nav>
+
+
+        <!-- CONTEÚDO DA VENDA -->
+        <section class="sale-container" id="novaVendaSection">
+
+            <!-- PRODUTOS -->
+            <section class="sale-products" aria-labelledby="tituloProdutosVenda">
+
+                <div class="card">
+
+                    <div class="products-header">
+                        <div>
+                            <h3 id="tituloProdutosVenda">Produtos</h3>
+                            <p>Selecione o cliente e adicione os produtos desta venda.</p>
+                        </div>
+
+                        <div class="products-badge" aria-live="polite">
+                            <span>Itens</span>
+                            <strong id="quantidadeItensVenda">0</strong>
+                        </div>
+                    </div>
+
+
+                    <div class="sale-products-fields">
+
+                        <!-- CLIENTE -->
+                        <div class="form-group">
+                            <label for="clienteVenda">Cliente</label>
+
+                            <select id="clienteVenda">
+                                <option value="">Consumidor não identificado</option>
+                            </select>
+                        </div>
+
+
+                        <!-- BUSCA DE PRODUTOS -->
+                        <div class="product-search">
+                            <div class="product-search-control">
+
+                                <svg
+                                    class="search-icon"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.35-4.35"></path>
+                                </svg>
+
+                                <input
+                                    type="text"
+                                    id="buscarProduto"
+                                    placeholder="Buscar produto por nome..."
+                                    autocomplete="off"
+                                    aria-label="Buscar produto"
+                                >
+                            </div>
+
+                            <div
+                                id="resultadoProdutos"
+                                class="product-results"
+                                role="listbox"
+                                aria-label="Resultados da busca"
+                            ></div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- TABELA -->
+                    <div class="sale-products-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Preço</th>
+                                    <th>Qtd.</th>
+                                    <th>Total</th>
+                                    <th aria-label="Ações"></th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="listaVenda">
+                                <tr class="empty-sale">
+                                    <td colspan="5">
+                                        <div class="sale-empty-state">
+                                            <div class="sale-empty-icon">
+                                                <svg
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="1.8"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path d="m21 8-9-5-9 5 9 5 9-5Z"></path>
+                                                    <path d="m3 8 9 5 9-5"></path>
+                                                    <path d="M12 13v9"></path>
+                                                    <path d="M3 8v9l9 5 9-5V8"></path>
+                                                </svg>
+                                            </div>
+
+                                            <strong>Nenhum produto adicionado</strong>
+                                            <span>Busque um produto acima para adicioná-lo à venda.</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- RESUMO -->
+            <aside class="sale-summary" aria-labelledby="tituloResumoVenda">
+
+                <div class="card">
+
+                    <h3 id="tituloResumoVenda">Resumo da venda</h3>
+
+                    <div class="summary-line">
+                        <span>Subtotal</span>
+                        <strong id="subtotalVenda">R$ 0,00</strong>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="descontoVenda">Desconto</label>
+
+                        <input
+                            type="number"
+                            id="descontoVenda"
+                            min="0"
+                            step="0.01"
+                            value="0"
+                            inputmode="decimal"
+                            aria-label="Desconto da venda"
+                        >
+                    </div>
+
+
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <strong id="totalVenda">R$ 0,00</strong>
+                    </div>
+
+
+                    <!-- STATUS DO PAGAMENTO -->
+                    <div class="sale-payment-status-section">
+                        <label>Status do pagamento</label>
+                        <div class="sale-payment-status-options">
+                            <label class="sale-payment-status-option paid">
+                                <input type="radio" name="statusPagamento" value="paga" checked>
+                                <span class="status-dot"></span>
+                                <span><strong>Paga</strong><small>O valor entra no caixa agora</small></span>
+                            </label>
+                            <label class="sale-payment-status-option waiting">
+                                <input type="radio" name="statusPagamento" value="aguardando">
+                                <span class="status-dot"></span>
+                                <span><strong>Aguardando pagamento</strong><small>Registra a venda como valor a receber</small></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- PAGAMENTO -->
+                    <div class="payment-section">
+                        <label>Forma de pagamento</label>
+
+                        <div class="payment-options">
+
+                            <label class="payment-option">
+                                <input type="radio" name="pagamento" value="PIX" checked>
+
+                                <svg class="payment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M8.5 3.5 3.5 8.5a5 5 0 0 0 0 7l5 5"></path>
+                                    <path d="m15.5 3.5 5 5a5 5 0 0 1 0 7l-5 5"></path>
+                                    <path d="m8 12 4-4 4 4-4 4-4-4Z"></path>
+                                </svg>
+
+                                <span>PIX</span>
+                            </label>
+
+
+                            <label class="payment-option">
+                                <input type="radio" name="pagamento" value="Dinheiro">
+
+                                <svg class="payment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="3" y="6" width="18" height="12" rx="2"></rect>
+                                    <circle cx="12" cy="12" r="2.5"></circle>
+                                    <path d="M7 9h.01M17 15h.01"></path>
+                                </svg>
+
+                                <span>Dinheiro</span>
+                            </label>
+
+
+                            <label class="payment-option">
+                                <input type="radio" name="pagamento" value="Débito">
+
+                                <svg class="payment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                                    <path d="M3 10h18"></path>
+                                    <path d="M7 15h3"></path>
+                                </svg>
+
+                                <span>Débito</span>
+                            </label>
+
+
+                            <label class="payment-option">
+                                <input type="radio" name="pagamento" value="Crédito">
+
+                                <svg class="payment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                                    <path d="M3 10h18"></path>
+                                    <path d="M14 15h3"></path>
+                                </svg>
+
+                                <span>Crédito</span>
+                            </label>
+
+                        </div>
+
+                        <div id="creditInstallmentBox" class="credit-installment-box" hidden>
+                            <div class="credit-installment-header">
+                                <div>
+                                    <strong>Parcelamento no crédito</strong>
+                                    <small>Sem juros — o valor total da venda não é alterado.</small>
+                                </div>
+                                <span class="credit-installment-badge">Crédito</span>
+                            </div>
+
+                            <div class="credit-installment-grid">
+                                <div class="form-group">
+                                    <label for="parcelasCredito">Quantidade de parcelas</label>
+                                    <select id="parcelasCredito" aria-label="Quantidade de parcelas no cartão de crédito">
+                                        <option value="1">1x — à vista</option>
+                                        <option value="2">2x sem juros</option>
+                                        <option value="3">3x sem juros</option>
+                                        <option value="4">4x sem juros</option>
+                                        <option value="5">5x sem juros</option>
+                                        <option value="6">6x sem juros</option>
+                                        <option value="7">7x sem juros</option>
+                                        <option value="8">8x sem juros</option>
+                                        <option value="9">9x sem juros</option>
+                                        <option value="10">10x sem juros</option>
+                                        <option value="11">11x sem juros</option>
+                                        <option value="12">12x sem juros</option>
+                                    </select>
+                                </div>
+
+                                <div class="credit-installment-preview">
+                                    <span>Valor por parcela</span>
+                                    <strong id="valorParcelaCredito">R$ 0,00</strong>
+                                    <small id="resumoParcelamentoCredito">1x de R$ 0,00</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- AÇÕES -->
+                    <div class="sale-actions">
+                        <button
+                            type="button"
+                            class="btn-primary btn-finalizar"
+                            onclick="finalizarVenda()"
+                        >
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="m5 12 4 4L19 6"></path>
+                            </svg>
+                            <span>Finalizar venda</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn-secondary btn-cancelar"
+                            onclick="cancelarVendaAtual()"
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+
+
+        <!-- HISTÓRICO DE VENDAS -->
+        <section class="sales-history-section sales-view-hidden" id="historicoVendas">
+            <div class="sales-history-card">
+                <div class="sales-history-header">
+                    <div>
+                        <span class="section-eyebrow">Histórico</span>
+                        <h2>Todas as vendas registradas</h2>
+                        <p>Consulte, abra os detalhes e imprima o cupom de qualquer venda.</p>
+                    </div>
+                    <div class="sales-history-total">
+                        <span>Vendas</span>
+                        <strong id="totalVendasRegistradas">0</strong>
+                    </div>
+                </div>
+
+                <div class="sales-history-filters">
+                    <div class="sales-history-search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="search" id="buscarVendaRegistrada" placeholder="Buscar por comanda ou cliente..." autocomplete="off">
+                    </div>
+                    <select id="filtroPagamentoVenda" aria-label="Filtrar por pagamento">
+                        <option value="">Todos os pagamentos</option>
+                        <option value="PIX">PIX</option>
+                        <option value="Dinheiro">Dinheiro</option>
+                        <option value="Débito">Débito</option>
+                        <option value="Crédito">Crédito</option>
+                    </select>
+                    <select id="filtroStatusVenda" aria-label="Filtrar por status">
+                        <option value="">Todos os status</option>
+                        <option value="paga">Pagas</option>
+                        <option value="aguardando">Aguardando pagamento</option>
+                        <option value="cancelada">Canceladas</option>
+                    </select>
+                </div>
+
+                <div class="sales-history-table-wrap">
+                    <table class="sales-history-table">
+                        <thead>
+                            <tr>
+                                <th>Comanda</th>
+                                <th>Cliente</th>
+                                <th>Data</th>
+                                <th>Pagamento</th>
+                                <th>Itens</th>
+                                <th>Total</th>
+                                <th>Pago</th>
+                                <th>A receber</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaVendasRegistradas">
+                            <tr><td colspan="10" class="sales-history-empty">Nenhuma venda registrada.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODAL DE DETALHES -->
+        <div class="sale-record-modal" id="modalVendaRegistrada" aria-hidden="true">
+            <div class="sale-record-modal-backdrop" onclick="fecharVendaRegistrada()"></div>
+            <section class="sale-record-dialog" role="dialog" aria-modal="true" aria-labelledby="tituloVendaRegistrada">
+                <header class="sale-record-dialog-header">
+                    <div>
+                        <span class="section-eyebrow">Detalhes da venda</span>
+                        <h2 id="tituloVendaRegistrada">Comanda #000000</h2>
+                    </div>
+                    <button type="button" class="sale-record-close" onclick="fecharVendaRegistrada()" aria-label="Fechar detalhes">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                            <path d="M18 6 6 18M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </header>
+
+                <div class="sale-record-dialog-body">
+                    <div class="sale-record-info-grid">
+                        <div class="sale-record-info-item"><span>Cliente</span><strong id="vendaRegistradaCliente">-</strong></div>
+                        <div class="sale-record-info-item"><span>Data</span><strong id="vendaRegistradaData">-</strong></div>
+                        <div class="sale-record-info-item"><span>Pagamento</span><strong id="vendaRegistradaPagamento">-</strong></div>
+                        <div class="sale-record-info-item"><span>Status</span><strong id="vendaRegistradaStatus">-</strong></div>
+                        <div class="sale-record-info-item"><span>Valor pago</span><strong id="vendaRegistradaPago">R$ 0,00</strong></div>
+                        <div class="sale-record-info-item"><span>A receber</span><strong id="vendaRegistradaPendente" class="sale-record-pending">R$ 0,00</strong></div>
+                    </div>
+
+                    <div class="sale-record-products">
+                        <div class="sale-record-products-title">
+                            <div>
+                                <h3>Itens vendidos</h3>
+                                <p>Relação completa dos produtos desta compra.</p>
+                            </div>
+                            <span id="vendaRegistradaItens">0 itens</span>
+                        </div>
+                        <div class="sale-record-products-table-wrap">
+                            <table class="sale-record-products-table">
+                                <thead>
+                                    <tr><th>Produto</th><th>Qtd.</th><th>Preço unit.</th><th>Total</th></tr>
+                                </thead>
+                                <tbody id="vendaRegistradaProdutos"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="sale-record-totals">
+                        <div><span>Subtotal</span><strong id="vendaRegistradaSubtotal">R$ 0,00</strong></div>
+                        <div><span>Desconto</span><strong id="vendaRegistradaDesconto">R$ 0,00</strong></div>
+                        <div class="sale-record-grand-total"><span>Total</span><strong id="vendaRegistradaTotal">R$ 0,00</strong></div>
+                    </div>
+                </div>
+
+                <footer class="sale-record-dialog-footer">
+                    <button type="button" class="btn-secondary" onclick="fecharVendaRegistrada()">Fechar</button>
+                    <button type="button" class="btn-primary sale-record-print" id="btnImprimirVendaRegistrada">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M6 9V2h12v7"></path>
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                            <rect x="6" y="14" width="12" height="8"></rect>
+                        </svg>
+                        Imprimir cupom
+                    </button>
+                </footer>
+            </section>
+        </div>
+
+
+        <!-- MODAL REGISTRAR PAGAMENTO -->
+        <div class="payment-receipt-modal" id="modalRegistrarPagamento" aria-hidden="true">
+            <div class="payment-receipt-backdrop" onclick="fecharRegistrarPagamento()"></div>
+            <section class="payment-receipt-dialog" role="dialog" aria-modal="true" aria-labelledby="tituloRegistrarPagamento">
+                <header>
+                    <div><span class="section-eyebrow">Contas a receber</span><h2 id="tituloRegistrarPagamento">Registrar pagamento</h2></div>
+                    <button type="button" class="sale-record-close" onclick="fecharRegistrarPagamento()" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+                </header>
+                <div class="payment-receipt-body">
+                    <div class="payment-receipt-sale"><span>Cliente</span><strong id="pagamentoCliente">-</strong><span>Saldo pendente</span><strong id="pagamentoSaldoPendente">R$ 0,00</strong></div>
+                    <div class="payment-status-control">
+                        <span class="payment-status-label">Status da venda</span>
+                        <div class="payment-status-options">
+                            <label class="payment-status-option waiting">
+                                <input type="radio" name="novoStatusPagamento" value="aguardando" checked>
+                                <span>
+                                    <strong>Aguardando pagamento</strong>
+                                    <small>Permite registrar pagamento parcial</small>
+                                </span>
+                            </label>
+                            <label class="payment-status-option paid">
+                                <input type="radio" name="novoStatusPagamento" value="paga">
+                                <span>
+                                    <strong>Marcar como paga</strong>
+                                    <small>Quita todo o saldo pendente</small>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group"><label for="valorNovoPagamento">Valor recebido</label><input type="number" id="valorNovoPagamento" min="0.01" step="0.01"></div>
+                    <div class="form-group"><label for="formaNovoPagamento">Forma de pagamento</label><select id="formaNovoPagamento"><option>PIX</option><option>Dinheiro</option><option>Débito</option><option>Crédito</option></select></div>
+                </div>
+                <div class="payment-receipt-actions">
+                    <button type="button" class="payment-receipt-cancel" onclick="fecharRegistrarPagamento()">
+                        Cancelar
+                    </button>
+                    <button type="button" class="payment-receipt-save" id="btnConfirmarNovoPagamento" onclick="confirmarNovoPagamento()">
+                        <svg class="payment-save-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"></path>
+                            <path d="M17 21v-8H7v8"></path>
+                            <path d="M7 3v5h8"></path>
+                        </svg>
+                        <span>Salvar alterações</span>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <footer class="sale-page-footer">
+            <span>Marcelino Bordados © 2026</span>
+            <span>Sistema local</span>
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script src="js/supabase-config.js?v=18"></script>
+<script src="js/online.js?v=18"></script>
+<script src="js/database.js?v=18"></script>
+<script src="js/impressao.js"></script>
+<script src="js/vendas.js"></script>
+<script src="js/ui.js?v=18"></script>
+
+<script>
+    /* =====================================================
+       AJUSTES DA INTERFACE DA PÁGINA DE VENDAS
+       ===================================================== */
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const botaoMenu = document.getElementById("mobileMenuButton");
+        const overlay = document.getElementById("mobileSidebarOverlay");
+        const listaVenda = document.getElementById("listaVenda");
+
+        function fecharMenu() {
+            document.body.classList.remove("mobile-menu-open");
+            if (botaoMenu) botaoMenu.setAttribute("aria-expanded", "false");
+        }
+
+        if (botaoMenu) {
+            botaoMenu.addEventListener("click", function () {
+                const aberto = document.body.classList.toggle("mobile-menu-open");
+                botaoMenu.setAttribute("aria-expanded", String(aberto));
+            });
+        }
+
+        if (overlay) {
+            overlay.addEventListener("click", fecharMenu);
+        }
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") fecharMenu();
+        });
+
+        function atualizarContadorItens() {
+            const contador = document.getElementById("quantidadeItensVenda");
+            if (!contador || !listaVenda) return;
+
+            const linhas = listaVenda.querySelectorAll("tr:not(.empty-sale)");
+            contador.textContent = linhas.length;
+        }
+
+        if (listaVenda) {
+            const observer = new MutationObserver(atualizarContadorItens);
+            observer.observe(listaVenda, { childList: true, subtree: true });
+            atualizarContadorItens();
+        }
+    });
+
+
+    /*
+       O vendas.js original possui duas funções com o nome cancelarVenda().
+       Esta função local evita o conflito sem alterar o arquivo JavaScript.
+    */
+    function cancelarVendaAtual() {
+        const possuiItens = typeof itensVenda !== "undefined" && itensVenda.length > 0;
+
+        if (possuiItens) {
+            const confirmar = confirm("Deseja cancelar esta venda?");
+            if (!confirmar) return;
+        }
+
+        if (typeof itensVenda !== "undefined") {
+            itensVenda = [];
+        }
+
+        const cliente = document.getElementById("clienteVenda");
+        const desconto = document.getElementById("descontoVenda");
+        const pix = document.querySelector('input[name="pagamento"][value="PIX"]');
+        const busca = document.getElementById("buscarProduto");
+        const resultados = document.getElementById("resultadoProdutos");
+
+        if (cliente) cliente.value = "";
+        if (desconto) desconto.value = "0";
+        if (pix) pix.checked = true;
+        if (busca) busca.value = "";
+
+        if (resultados) {
+            resultados.innerHTML = "";
+            resultados.style.display = "none";
+        }
+
+        if (typeof atualizarVenda === "function") {
+            atualizarVenda();
+        }
+
+        if (!possuiItens) {
+            window.location.href = "index.html";
+        }
+    }
+</script>
+
+</body>
+</html>
