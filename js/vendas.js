@@ -27,10 +27,80 @@ document.addEventListener("DOMContentLoaded", () => {
 
     configurarParcelamentoCartao();
 
+    importarPedidoPelaURL();
+
     abrirRecebimentoPelaURL();
 
 });
 
+
+
+function importarPedidoPelaURL() {
+    try {
+        const parametros = new URLSearchParams(window.location.search);
+        const pedidoId = parametros.get("pedido");
+        if (!pedidoId) return;
+
+        banco = obterBanco();
+        const pedido = (banco.pedidos || []).find(p => String(p.id) === String(pedidoId));
+        if (!pedido) { AppPopup.alert("Pedido não encontrado para importação."); return; }
+        if (pedido.status === "cancelado") { AppPopup.alert("Este pedido está cancelado e não pode ser importado."); return; }
+        if (pedido.vendaId) { AppPopup.alert("Este pedido já possui uma venda vinculada."); mostrarTelaVendas("historico"); return; }
+
+        itensVenda = [];
+        const itensPedido = Array.isArray(pedido.itens) ? pedido.itens : [];
+        itensPedido.forEach(item => {
+            itensVenda.push({
+                produtoId: item.produtoId ?? null,
+                nome: item.nome || "Produto",
+                preco: Number(item.preco || 0),
+                quantidade: Number(item.quantidade || 0),
+                pedidoOrigemId: pedido.id,
+                estoqueJaBaixado: true,
+                tipo: "produto_pedido"
+            });
+        });
+
+        const valorAdicional = Number(
+            pedido.valorAdicional ??
+            (!itensPedido.length ? pedido.valor : 0) ?? 0
+        );
+        if (valorAdicional > 0) {
+            itensVenda.push({
+                produtoId: null,
+                chavePersonalizada: `pedido-${pedido.id}-adicional`,
+                personalizado: true,
+                tipo: "valor_pedido",
+                nome: pedido.titulo ? `Pedido #${String(pedido.numero || 0).padStart(4,"0")} — ${pedido.titulo}` : `Pedido #${String(pedido.numero || 0).padStart(4,"0")}`,
+                preco: valorAdicional,
+                quantidade: 1,
+                pedidoOrigemId: pedido.id,
+                estoqueJaBaixado: true
+            });
+        }
+
+        const clienteSelect = document.getElementById("clienteVenda");
+        if (clienteSelect && pedido.clienteId && [...clienteSelect.options].some(o => String(o.value) === String(pedido.clienteId))) {
+            clienteSelect.value = String(pedido.clienteId);
+        }
+
+        window.pedidoImportadoVendaId = pedido.id;
+        atualizarVenda();
+        mostrarAvisoPedidoImportado(pedido);
+    } catch (erro) {
+        console.error("Erro ao importar pedido para venda:", erro);
+    }
+}
+
+function mostrarAvisoPedidoImportado(pedido) {
+    const section = document.getElementById("novaVendaSection");
+    if (!section || document.getElementById("pedidoImportadoAviso")) return;
+    const aviso = document.createElement("div");
+    aviso.id = "pedidoImportadoAviso";
+    aviso.className = "sale-order-import-banner";
+    aviso.innerHTML = `<div><strong>Pedido #${String(pedido.numero || 0).padStart(4,"0")} importado</strong><span>${pedido.cliente || "Consumidor não identificado"} • O estoque destes itens já foi baixado no pedido e não será descontado novamente.</span></div><a href="pedidos.html">Ver pedidos</a>`;
+    section.parentNode.insertBefore(aviso, section);
+}
 
 function abrirRecebimentoPelaURL() {
     try {
@@ -264,7 +334,7 @@ function adicionarProdutoVenda(produtoId) {
 
     if (estoque <= 0) {
 
-        alert("Este produto está sem estoque.");
+        AppPopup.alert("Este produto está sem estoque.");
 
         return;
 
@@ -280,7 +350,7 @@ function adicionarProdutoVenda(produtoId) {
 
         if (existente.quantidade >= estoque) {
 
-            alert(
+            AppPopup.alert(
                 `Estoque insuficiente.\n\nDisponível: ${estoque}`
             );
 
@@ -309,6 +379,60 @@ function adicionarProdutoVenda(produtoId) {
 
 }
 
+
+// =========================================
+// VALOR PERSONALIZADO / SALDO ANTERIOR
+// =========================================
+
+function abrirModalValorPersonalizado() {
+    const modal = document.getElementById("modalValorPersonalizado");
+    if (!modal) return;
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    setTimeout(() => document.getElementById("descricaoValorPersonalizado")?.focus(), 30);
+}
+
+function fecharModalValorPersonalizado() {
+    const modal = document.getElementById("modalValorPersonalizado");
+    if (!modal) return;
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+    const form = document.getElementById("formValorPersonalizado");
+    if (form) form.reset();
+}
+
+function adicionarValorPersonalizado(event) {
+    if (event) event.preventDefault();
+    const descricao = String(document.getElementById("descricaoValorPersonalizado")?.value || "").trim();
+    const valor = Number(document.getElementById("valorPersonalizado")?.value || 0);
+
+    if (!descricao) {
+        AppPopup.alert("Informe uma descrição para o valor personalizado.");
+        return;
+    }
+    if (!Number.isFinite(valor) || valor <= 0) {
+        AppPopup.alert("Informe um valor maior que zero.");
+        return;
+    }
+
+    itensVenda.push({
+        produtoId: null,
+        chavePersonalizada: `custom-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        personalizado: true,
+        tipo: "valor_personalizado",
+        nome: descricao,
+        preco: valor,
+        quantidade: 1
+    });
+
+    fecharModalValorPersonalizado();
+    atualizarVenda();
+}
+
+function removerValorPersonalizado(chave) {
+    itensVenda = itensVenda.filter(item => item.chavePersonalizada !== chave);
+    atualizarVenda();
+}
 
 // =========================================
 // ALTERAR QUANTIDADE
@@ -344,7 +468,7 @@ function alterarQuantidade(produtoId, novaQuantidade) {
 
     if (novaQuantidade > estoque) {
 
-        alert(
+        AppPopup.alert(
             `Quantidade maior que o estoque disponível.\n\n` +
             `Disponível: ${estoque}`
         );
@@ -382,112 +506,60 @@ function removerProdutoVenda(produtoId) {
 // =========================================
 
 function atualizarVenda() {
-
     const tbody = document.getElementById("listaVenda");
-
     if (!tbody) return;
 
-
     if (itensVenda.length === 0) {
-
         tbody.innerHTML = `
-
             <tr class="empty-sale">
-
-                <td colspan="5">
-                    Nenhum produto adicionado.
-                </td>
-
-            </tr>
-
-        `;
-
+                <td colspan="5">Nenhum item adicionado.</td>
+            </tr>`;
     } else {
-
         tbody.innerHTML = "";
 
-
         itensVenda.forEach(item => {
-
-            const totalItem =
-                item.preco * item.quantidade;
-
-
+            const totalItem = Number(item.preco || 0) * Number(item.quantidade || 0);
             const tr = document.createElement("tr");
 
-            tr.innerHTML = `
-
-                <td>
-
-                    <strong>
-                        ${item.nome}
-                    </strong>
-
-                </td>
-
-
-                <td>
-                    ${formatarMoeda(item.preco)}
-                </td>
-
-
-                <td>
-
-                    <input
-                        class="quantity-input"
-                        type="number"
-                        min="1"
-                        value="${item.quantidade}"
-                        onchange="
-                            alterarQuantidade(
-                                ${item.produtoId},
-                                this.value
-                            )
-                        "
-                    >
-
-                </td>
-
-
-                <td>
-
-                    <strong>
-                        ${formatarMoeda(totalItem)}
-                    </strong>
-
-                </td>
-
-
-                <td>
-
-                    <button
-                        class="btn-remove"
-                        onclick="
-                            removerProdutoVenda(
-                                ${item.produtoId}
-                            )
-                        "
-                        title="Remover">
-
-                        ×
-
-                    </button>
-
-                </td>
-
-            `;
-
+            if (item.personalizado) {
+                const chave = String(item.chavePersonalizada || "").replace(/'/g, "\\'");
+                const origemPedido = !!item.pedidoOrigemId;
+                tr.className = "custom-value-row";
+                tr.innerHTML = `
+                    <td>
+                        <strong>${escapeHtml(item.nome)}</strong>
+                        <span class="custom-value-badge">${origemPedido ? "Valor do pedido" : "Valor personalizado"}</span>
+                    </td>
+                    <td>${formatarMoeda(item.preco)}</td>
+                    <td><span class="custom-value-qty">1</span></td>
+                    <td><strong>${formatarMoeda(totalItem)}</strong></td>
+                    <td>${origemPedido ? '<span class="order-import-lock" title="Vinculado ao pedido">🔒</span>' : `<button class="btn-remove" type="button" onclick="removerValorPersonalizado('${chave}')" title="Remover">×</button>`}</td>`;
+            } else if (item.estoqueJaBaixado) {
+                tr.className = "order-imported-product-row";
+                tr.innerHTML = `
+                    <td><strong>${escapeHtml(item.nome)}</strong><span class="custom-value-badge order-stock-badge">Do pedido</span></td>
+                    <td>${formatarMoeda(item.preco)}</td>
+                    <td><span class="custom-value-qty">${Number(item.quantidade || 1)}</span></td>
+                    <td><strong>${formatarMoeda(totalItem)}</strong></td>
+                    <td><span class="order-import-lock" title="Estoque já baixado no pedido">🔒</span></td>`;
+            } else {
+                tr.innerHTML = `
+                    <td><strong>${escapeHtml(item.nome)}</strong></td>
+                    <td>${formatarMoeda(item.preco)}</td>
+                    <td>
+                        <input class="quantity-input" type="number" min="1" value="${Number(item.quantidade || 1)}"
+                            onchange="alterarQuantidade(${Number(item.produtoId)}, this.value)">
+                    </td>
+                    <td><strong>${formatarMoeda(totalItem)}</strong></td>
+                    <td>
+                        <button class="btn-remove" type="button" onclick="removerProdutoVenda(${Number(item.produtoId)})" title="Remover">×</button>
+                    </td>`;
+            }
             tbody.appendChild(tr);
-
         });
-
     }
-
-
     calcularTotais();
-
 }
-
 
 // =========================================
 // CÁLCULO
@@ -639,9 +711,9 @@ function descricaoPagamentoVenda(venda) {
 // FINALIZAR VENDA
 // =========================================
 
-function finalizarVenda() {
+async function finalizarVenda() {
     if (itensVenda.length === 0) {
-        alert("Adicione pelo menos um produto à venda.");
+        AppPopup.alert("Adicione pelo menos um item à venda.");
         return;
     }
 
@@ -657,10 +729,11 @@ function finalizarVenda() {
     const statusPagamento = document.querySelector('input[name="statusPagamento"]:checked')?.value || "paga";
 
     for (const item of itensVenda) {
+        if (item.personalizado || item.estoqueJaBaixado) continue;
         const produto = banco.produtos.find(p => Number(p.id) === Number(item.produtoId));
-        if (!produto) { alert(`O produto "${item.nome}" não existe mais.`); return; }
+        if (!produto) { AppPopup.alert(`O produto "${item.nome}" não existe mais.`); return; }
         const estoque = obterEstoqueProduto(produto);
-        if (item.quantidade > estoque) { alert(`Estoque insuficiente para ${item.nome}. Disponível: ${estoque}`); return; }
+        if (item.quantidade > estoque) { AppPopup.alert(`Estoque insuficiente para ${item.nome}. Disponível: ${estoque}`); return; }
     }
 
     const numeroComanda = typeof gerarNumeroComanda === "function" ? gerarNumeroComanda() : String((banco.vendas?.length || 0) + 1).padStart(6, "0");
@@ -668,10 +741,12 @@ function finalizarVenda() {
     const rotuloPagamento = pagamento === "Crédito"
         ? (parcelas === 1 ? "Crédito - à vista" : `Crédito - ${parcelas}x de ${formatarMoeda(valorParcela)}`)
         : pagamento;
-    if (!confirm(`Finalizar comanda #${numeroComanda}?\n\nCliente: ${cliente ? cliente.nome : "Consumidor não identificado"}\nTotal: ${formatarMoeda(total)}\nStatus: ${rotuloStatus}\nPagamento: ${rotuloPagamento}`)) return;
+    if (!(await AppPopup.confirm(`Finalizar comanda #${numeroComanda}?\n\nCliente: ${cliente ? cliente.nome : "Consumidor não identificado"}\nTotal: ${formatarMoeda(total)}\nStatus: ${rotuloStatus}\nPagamento: ${rotuloPagamento}`))) return;
 
     itensVenda.forEach(item => {
+        if (item.personalizado || item.estoqueJaBaixado) return;
         const produto = banco.produtos.find(p => Number(p.id) === Number(item.produtoId));
+        if (!produto) return;
         if (produto.estoque !== undefined) produto.estoque = Number(produto.estoque) - item.quantidade;
         else if (produto.quantidade !== undefined) produto.quantidade = Number(produto.quantidade) - item.quantidade;
         else if (produto.quantidadeEstoque !== undefined) produto.quantidadeEstoque = Number(produto.quantidadeEstoque) - item.quantidade;
@@ -683,7 +758,8 @@ function finalizarVenda() {
         id: Date.now(), comanda: numeroComanda,
         clienteId: cliente ? cliente.id : null,
         cliente: cliente ? cliente.nome : "Consumidor não identificado",
-        produtos: itensVenda.map(item => ({ produtoId:item.produtoId, nome:item.nome, quantidade:item.quantidade, preco:item.preco, total:item.preco*item.quantidade })),
+        produtos: itensVenda.map(item => ({ produtoId:item.produtoId ?? null, chavePersonalizada:item.chavePersonalizada || null, personalizado:!!item.personalizado, tipo:item.tipo || "produto", nome:item.nome, quantidade:item.quantidade, preco:item.preco, total:item.preco*item.quantidade, pedidoOrigemId:item.pedidoOrigemId ?? null, estoqueJaBaixado:!!item.estoqueJaBaixado })),
+        pedidoId: window.pedidoImportadoVendaId || null,
         subtotal, desconto, total, pagamento,
         parcelas: pagamento === "Crédito" ? parcelas : 1,
         valorParcela: pagamento === "Crédito" ? valorParcela : total,
@@ -699,14 +775,27 @@ function finalizarVenda() {
     banco.caixa = Array.isArray(banco.caixa) ? banco.caixa : [];
     banco.vendas.push(venda);
 
+    if (venda.pedidoId) {
+        const pedidoVinculado = (banco.pedidos || []).find(p => String(p.id) === String(venda.pedidoId));
+        if (pedidoVinculado) {
+            pedidoVinculado.vendaId = venda.id;
+            pedidoVinculado.convertidoEmVenda = true;
+            pedidoVinculado.status = "concluido";
+            pedidoVinculado.atualizadoEm = agora;
+        }
+    }
+
     if (paga && total > 0) {
         banco.caixa.push({ id:Date.now()+2, tipo:"entrada", categoria:"Venda", descricao:`Venda - Comanda #${numeroComanda}`, valor:total, formaPagamento:pagamento, parcelas: pagamento === "Crédito" ? parcelas : 1, valorParcela: pagamento === "Crédito" ? valorParcela : total, vendaId:venda.id, origem:"venda", data:agora });
     }
 
     salvarBanco(banco);
-    alert(`Venda registrada com sucesso!\n\nComanda: #${numeroComanda}\nTotal: ${formatarMoeda(total)}\nStatus: ${rotuloStatus}`);
+    AppPopup.alert(`Venda registrada com sucesso!\n\nComanda: #${numeroComanda}\nTotal: ${formatarMoeda(total)}\nStatus: ${rotuloStatus}`);
 
     itensVenda = [];
+    window.pedidoImportadoVendaId = null;
+    const avisoPedido = document.getElementById("pedidoImportadoAviso"); if (avisoPedido) avisoPedido.remove();
+    try { if (new URLSearchParams(window.location.search).has("pedido")) history.replaceState({}, "", "vendas.html"); } catch (e) {}
     document.getElementById("clienteVenda").value = "";
     document.getElementById("descontoVenda").value = "0";
     const pix = document.querySelector('input[name="pagamento"][value="PIX"]'); if (pix) pix.checked = true;
@@ -722,7 +811,7 @@ function finalizarVenda() {
 // CANCELAR
 // =========================================
 
-function cancelarVendaAtual() {
+async function cancelarVendaAtual() {
 
     if (itensVenda.length === 0) {
 
@@ -733,7 +822,7 @@ function cancelarVendaAtual() {
     }
 
 
-    const confirmar = confirm(
+    const confirmar = await AppPopup.confirm(
         "Deseja cancelar esta venda?"
     );
 
@@ -754,11 +843,33 @@ function cancelarVendaAtual() {
         "descontoVenda"
     ).value = "0";
 
-}/* =====================================================
+}function devolverEstoqueItemVenda(bancoAtual, item) {
+    if (!item || item.personalizado || item.produtoId == null) return;
+    const produto = (bancoAtual.produtos || []).find(p => Number(p.id) === Number(item.produtoId));
+    if (!produto) return;
+    const quantidade = Number(item.quantidade || item.qtd || 0);
+    if (produto.estoque !== undefined) produto.estoque = Number(produto.estoque || 0) + quantidade;
+    else if (produto.quantidade !== undefined) produto.quantidade = Number(produto.quantidade || 0) + quantidade;
+    else if (produto.quantidadeEstoque !== undefined) produto.quantidadeEstoque = Number(produto.quantidadeEstoque || 0) + quantidade;
+    else produto.quantidade = quantidade;
+}
+
+function cancelarPedidoVinculadoDaVenda(bancoAtual, venda) {
+    if (!venda?.pedidoId) return;
+    const pedido = (bancoAtual.pedidos || []).find(p => String(p.id) === String(venda.pedidoId));
+    if (!pedido) return;
+    pedido.status = "cancelado";
+    pedido.vendaId = null;
+    pedido.convertidoEmVenda = false;
+    pedido.estoqueRestaurado = true; // a devolução foi feita pelo cancelamento/exclusão da venda
+    pedido.atualizadoEm = new Date().toISOString();
+}
+
+/* =====================================================
    CANCELAR VENDA
 ===================================================== */
 
-function cancelarVendaRegistrada(vendaId) {
+async function cancelarVendaRegistrada(vendaId) {
 
     const banco =
         obterBanco();
@@ -774,7 +885,7 @@ function cancelarVendaRegistrada(vendaId) {
 
     if (!venda) {
 
-        alert(
+        AppPopup.alert(
             "Venda não encontrada."
         );
 
@@ -788,7 +899,7 @@ function cancelarVendaRegistrada(vendaId) {
         "cancelada"
     ) {
 
-        alert(
+        AppPopup.alert(
             "Esta venda já foi cancelada."
         );
 
@@ -798,7 +909,7 @@ function cancelarVendaRegistrada(vendaId) {
 
 
     const confirmar =
-        confirm(
+        await AppPopup.confirm(
 
             "Cancelar esta venda?\n\n" +
 
@@ -827,39 +938,11 @@ function cancelarVendaRegistrada(vendaId) {
        DEVOLVER PRODUTOS AO ESTOQUE
     ========================================== */
 
-    if (
-        Array.isArray(venda.produtos)
-    ) {
-
-        venda.produtos.forEach(item => {
-
-            const produto =
-                banco.produtos.find(
-                    p =>
-                        Number(p.id) ===
-                        Number(
-                            item.produtoId
-                        )
-                );
-
-
-            if (produto) {
-
-                produto.estoque =
-                    Number(
-                        produto.estoque || 0
-                    ) +
-                    Number(
-                        item.quantidade ||
-                        item.qtd ||
-                        0
-                    );
-
-            }
-
-        });
-
+    if (Array.isArray(venda.produtos)) {
+        venda.produtos.forEach(item => devolverEstoqueItemVenda(banco, item));
     }
+
+    cancelarPedidoVinculadoDaVenda(banco, venda);
 
 
     /* =========================================
@@ -920,7 +1003,7 @@ function cancelarVendaRegistrada(vendaId) {
     salvarBanco(banco);
 
 
-    alert(
+    AppPopup.alert(
         "Venda cancelada com sucesso!"
     );
 
@@ -997,14 +1080,14 @@ function renderizarHistoricoVendas() {
    diretamente vinculados a ela no estoque e no caixa.
 ===================================================== */
 
-function excluirVendaRegistrada(vendaId) {
+async function excluirVendaRegistrada(vendaId) {
     const bancoAtual = obterBanco();
     const indice = (bancoAtual.vendas || []).findIndex(
         venda => Number(venda.id) === Number(vendaId)
     );
 
     if (indice === -1) {
-        alert("Venda não encontrada.");
+        AppPopup.alert("Venda não encontrada.");
         return;
     }
 
@@ -1023,27 +1106,12 @@ function excluirVendaRegistrada(vendaId) {
             : "Os produtos retornarão ao estoque e os lançamentos financeiros vinculados à venda serão removidos.") +
         "\n\nEsta ação não pode ser desfeita.";
 
-    if (!confirm(aviso)) return;
+    if (!(await AppPopup.confirm(aviso))) return;
 
     // Se a venda ainda não estava cancelada, devolve os itens ao estoque.
     if (venda.status !== "cancelada" && Array.isArray(venda.produtos)) {
-        venda.produtos.forEach(item => {
-            const produto = (bancoAtual.produtos || []).find(
-                p => Number(p.id) === Number(item.produtoId)
-            );
-
-            if (!produto) return;
-
-            const quantidade = Number(item.quantidade || item.qtd || 0);
-
-            if (produto.estoque !== undefined) {
-                produto.estoque = Number(produto.estoque || 0) + quantidade;
-            } else if (produto.quantidade !== undefined) {
-                produto.quantidade = Number(produto.quantidade || 0) + quantidade;
-            } else if (produto.quantidadeEstoque !== undefined) {
-                produto.quantidadeEstoque = Number(produto.quantidadeEstoque || 0) + quantidade;
-            }
-        });
+        venda.produtos.forEach(item => devolverEstoqueItemVenda(bancoAtual, item));
+        cancelarPedidoVinculadoDaVenda(bancoAtual, venda);
     }
 
     // Remove movimentações financeiras que pertencem especificamente à venda.
@@ -1068,14 +1136,14 @@ function excluirVendaRegistrada(vendaId) {
 
     renderizarHistoricoVendas();
 
-    alert(`Comanda #${comanda} removida do histórico com sucesso.`);
+    AppPopup.alert(`Comanda #${comanda} removida do histórico com sucesso.`);
 }
 
 function abrirVendaRegistrada(vendaId) {
     banco = obterBanco();
     const venda = (banco.vendas || []).find(v => Number(v.id) === Number(vendaId));
     if (!venda) {
-        alert("Venda não encontrada.");
+        AppPopup.alert("Venda não encontrada.");
         return;
     }
 
@@ -1160,7 +1228,7 @@ function abrirRegistrarPagamento(vendaId) {
     const venda=(banco.vendas||[]).find(v=>Number(v.id)===Number(vendaId));
     if(!venda || venda.status==='cancelada') return;
     const f=obterFinanceiroVenda(venda);
-    if(f.valorPendente<=0){ alert('Esta venda já está totalmente paga.'); return; }
+    if(f.valorPendente<=0){ AppPopup.alert('Esta venda já está totalmente paga.'); return; }
     vendaPagamentoAbertaId=venda.id;
     document.getElementById('tituloRegistrarPagamento').textContent=`Receber comanda #${venda.comanda||venda.id}`;
     document.getElementById('pagamentoCliente').textContent=venda.cliente||'Consumidor não identificado';
@@ -1206,8 +1274,8 @@ function confirmarNovoPagamento(){
     let valor=Math.round((Number(document.getElementById('valorNovoPagamento').value)||0)*100)/100;
     const forma=document.getElementById('formaNovoPagamento').value||'PIX';
     if(statusEscolhido==='paga') valor=Math.round(f.valorPendente*100)/100;
-    if(valor<=0){alert('Informe um valor maior que zero.');return;}
-    if(valor>f.valorPendente+0.009){alert(`O valor não pode ser maior que o saldo pendente (${formatarMoeda(f.valorPendente)}).`);return;}
+    if(valor<=0){AppPopup.alert('Informe um valor maior que zero.');return;}
+    if(valor>f.valorPendente+0.009){AppPopup.alert(`O valor não pode ser maior que o saldo pendente (${formatarMoeda(f.valorPendente)}).`);return;}
     const agora=new Date().toISOString();
     venda.pagamentos=Array.isArray(venda.pagamentos)?venda.pagamentos:[];
     venda.pagamentos.push({id:Date.now(),valor,formaPagamento:forma,data:agora});
@@ -1218,5 +1286,5 @@ function confirmarNovoPagamento(){
     banco.caixa=Array.isArray(banco.caixa)?banco.caixa:[];
     banco.caixa.push({id:Date.now()+1,tipo:'entrada',categoria:'Recebimento de venda',descricao:`Recebimento - Comanda #${venda.comanda||venda.id}`,valor,formaPagamento:forma,vendaId:venda.id,origem:'recebimento_venda',data:agora});
     salvarBanco(banco); fecharRegistrarPagamento(); renderizarHistoricoVendas();
-    alert(`Pagamento registrado com sucesso!\nRecebido: ${formatarMoeda(valor)}\nSaldo: ${formatarMoeda(venda.valorPendente)}`);
+    AppPopup.alert(`Pagamento registrado com sucesso!\nRecebido: ${formatarMoeda(valor)}\nSaldo: ${formatarMoeda(venda.valorPendente)}`);
 }

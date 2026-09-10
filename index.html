@@ -1,655 +1,340 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
 
+<html class="ui-preparing" lang="pt-BR">
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    >
-
-    <title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>
         Dashboard | Marcelino Bordados
     </title>
-
-    <link
-        rel="stylesheet"
-        href="css/style.css?v=18"
-    >
-
+<link href="css/style.css?v=32" rel="stylesheet"/>
 </head>
-
 <body>
 <!-- ==========================================
          SIDEBAR
          ========================================== -->
-
-    <aside class="sidebar">
-
-        <!-- LOGO -->
-
-        <div class="logo">
-
-            <div class="logo-icon">
-                M
-            </div>
-
-            <div>
-
-                <strong>
-                    Marcelino
-                </strong>
-
-                <span>
-                    Bordados
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- MENU -->
-
-        <nav class="menu">
-
-            <a
-                href="index.html"
-                class="menu-item active"
-            >
-
-                <span>📊</span>
-                <span>Dashboard</span>
-
-            </a>
-
-
-            <a
-                href="produtos.html"
-                class="menu-item"
-            >
-
-                <span>📦</span>
-                <span>Produtos</span>
-
-            </a>
-
-
-            <a
-                href="clientes.html"
-                class="menu-item"
-            >
-
-                <span>👥</span>
-                <span>Clientes</span>
-
-            </a>
-
-
-            <a
-                href="vendas.html"
-                class="menu-item"
-            >
-
-                <span>🧾</span>
-                <span>Vendas</span>
-
-            </a>
-
-
-            <a
-                href="caixa.html"
-                class="menu-item"
-            >
-
-                <span>💰</span>
-                <span>Caixa</span>
-
-            </a>
-
-
-            <a
-                href="relatorios.html"
-                class="menu-item"
-            >
-
-                <span>📈</span>
-                <span>Relatórios</span>
-
-            </a>
-
-
-            <a
-                href="configuracoes.html"
-                class="menu-item"
-            >
-
-                <span>⚙️</span>
-                <span>Configurações</span>
-
-            </a>
-
-        </nav>
-
-
-        <!-- SAIR -->
-
-        <div class="sidebar-bottom">
-
-            <a
-                href="#"
-                class="menu-item"
-                onclick="sairSistema(event)"
-            >
-
-                <span>🚪</span>
-                <span>Sair</span>
-
-            </a>
-
-        </div>
-
-    </aside>
-
-
-    <!-- ==========================================
+<aside class="sidebar"><div class="logo"><div class="logo-icon">M</div><div><strong>Marcelino</strong><span>Bordados</span></div></div><nav class="menu"><a class="menu-item active" href="index.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><rect height="7" rx="2" width="7" x="3" y="3"></rect><rect height="7" rx="2" width="7" x="14" y="3"></rect><rect height="7" rx="2" width="7" x="3" y="14"></rect><rect height="7" rx="2" width="7" x="14" y="14"></rect></svg><span>Dashboard</span></a><a class="menu-item" href="vendas.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><circle cx="9" cy="20" r="1"></circle><circle cx="19" cy="20" r="1"></circle><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"></path></svg><span>Vendas</span></a><a class="menu-item" href="pedidos.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M9 5h6"></path><path d="M9 9h6"></path><path d="M9 13h4"></path><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"></path><path d="m15 17 2 2 4-4"></path></svg><span>Pedidos</span></a><a class="menu-item" href="produtos.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="m21 8-9-5-9 5 9 5 9-5Z"></path><path d="m3 8 9 5 9-5"></path><path d="M12 13v9"></path><path d="M3 8v9l9 5 9-5V8"></path></svg><span>Produtos</span></a><a class="menu-item" href="clientes.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Clientes</span></a><a class="menu-item" href="caixa.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M20 7V6a2 2 0 0 0-2-2H5a3 3 0 0 0 0 6h15v8a2 2 0 0 1-2 2H5a3 3 0 0 1-3-3V7"></path><path d="M16 14h.01"></path></svg><span>Caixa</span></a><a class="menu-item" href="relatorios.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M3 3v18h18"></path><path d="m7 16 4-5 4 3 5-7"></path></svg><span>Relatórios</span></a><a class="menu-item" href="configuracoes.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.1A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.1A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9c.16.36.4.7.7 1 .3.3.68.46 1.1.5H21v4h-.1a1.7 1.7 0 0 0-1.5.5Z"></path></svg><span>Configurações</span></a><a class="menu-item" href="backup.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v6c0 1.7 4 3 9 3s9-1.3 9-3V5"></path><path d="M3 11v6c0 1.7 4 3 9 3s9-1.3 9-3v-6"></path></svg><span>Backup</span></a></nav><div class="sidebar-bottom"><a class="menu-item logout" data-action="logout" href="#"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M10 17l5-5-5-5"></path><path d="M15 12H3"></path><path d="M21 19V5a2 2 0 0 0-2-2h-6"></path></svg><span>Sair</span></a><div class="system-version">Versão 3.1.0 Online</div></div></aside>
+<!-- ==========================================
          CONTEÚDO PRINCIPAL
          ========================================== -->
-
-    <main class="main">
-
-
-        <!-- ======================================
+<main class="main">
+<!-- ======================================
              CABEÇALHO
              ====================================== -->
-
-        <header class="topbar">
-
-            <div>
-
-                <h1>
+<header class="topbar">
+<div>
+<h1>
                     Dashboard
                 </h1>
-
-                <p>
+<p>
                     Visão geral do seu negócio
                 </p>
-
-            </div>
-
-
-            <div class="user-area">
-
-                <div class="notification">
+</div>
+<div class="user-area">
+<div class="notification">
                     🔔
                 </div>
-
-
-                <div class="user">
-
-                    <div class="user-avatar">
+<div class="user">
+<div class="user-avatar">
                         M
                     </div>
-
-                    <div>
-
-                        <strong id="nomeUsuarioLogado">
+<div>
+<strong id="nomeUsuarioLogado">
                             Usuário
                         </strong>
-
-                        <span>
+<span>
                             Administrador
                         </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </header>
-
-
-        <!-- ======================================
+</div>
+</div>
+</div>
+</header>
+<!-- ======================================
              CARDS PRINCIPAIS
              ====================================== -->
-
-        <section class="stats-grid">
-
-
-            <!-- RECEBIDO HOJE -->
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    🛒
-                </div>
-
-                <div>
-
-                    <span>
+<section class="stats-grid">
+<!-- RECEBIDO HOJE -->
+<div class="stat-card">
+<div class="stat-icon"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><circle cx="9" cy="20" r="1"></circle><circle cx="19" cy="20" r="1"></circle><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"></path></svg></div>
+<div>
+<span>
                         Recebido hoje
                     </span>
-
-                    <strong id="vendasHoje">
+<strong id="vendasHoje">
                         R$ 0,00
                     </strong>
-
-                    <small id="quantidadeVendasHoje">
+<small id="quantidadeVendasHoje">
                         0 recebimentos
                     </small>
-
-                </div>
-
-            </div>
-
-
-            <!-- FATURAMENTO -->
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    💰
-                </div>
-
-                <div>
-
-                    <span>
+</div>
+</div>
+<!-- FATURAMENTO -->
+<div class="stat-card">
+<div class="stat-icon"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><circle cx="9" cy="20" r="1"></circle><circle cx="19" cy="20" r="1"></circle><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"></path></svg></div>
+<div>
+<span>
                         Faturamento do mês
                     </span>
-
-                    <strong id="faturamentoMes">
+<strong id="faturamentoMes">
                         R$ 0,00
                     </strong>
-
-                    <small>
+<small>
                         Somente vendas recebidas
                     </small>
-
-                </div>
-
-            </div>
-
-
-            <!-- ESTOQUE -->
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    📦
-                </div>
-
-                <div>
-
-                    <span>
+</div>
+</div>
+<!-- ESTOQUE -->
+<div class="stat-card">
+<div class="stat-icon"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><circle cx="9" cy="20" r="1"></circle><circle cx="19" cy="20" r="1"></circle><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"></path></svg></div>
+<div>
+<span>
                         Valor em estoque
                     </span>
-
-                    <strong id="valorEstoque">
+<strong id="valorEstoque">
                         R$ 0,00
                     </strong>
-
-                    <small id="produtosEstoque">
+<small id="produtosEstoque">
                         0 unidades
                     </small>
-
-                </div>
-
-            </div>
-
-
-            <!-- CLIENTES -->
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    👥
-                </div>
-
-                <div>
-
-                    <span>
+</div>
+</div>
+<!-- CLIENTES -->
+<div class="stat-card">
+<div class="stat-icon"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><circle cx="9" cy="20" r="1"></circle><circle cx="19" cy="20" r="1"></circle><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"></path></svg></div>
+<div>
+<span>
                         Clientes
                     </span>
-
-                    <strong id="totalClientes">
+<strong id="totalClientes">
                         0
                     </strong>
-
-                    <small>
+<small>
                         cadastrados
                     </small>
-
-                </div>
-
-            </div>
-
-
-        </section>
-
-
-        <!-- ======================================
+</div>
+</div>
+</section>
+<!-- ======================================
              DUAS COLUNAS
              ====================================== -->
-
-        <section class="dashboard-grid">
-
-
-            <!-- ==================================
+<section class="dashboard-grid">
+<!-- ==================================
                  VENDAS RECENTES
                  ================================== -->
-
-            <div class="card">
-
-                <div class="card-header">
-
-                    <div>
-
-                        <h2>
+<div class="card">
+<div class="card-header">
+<div>
+<h2>
                             Vendas recentes
                         </h2>
-
-                        <p>
+<p>
                             Últimas vendas realizadas
                         </p>
-
-                    </div>
-
-                    <a
-                        href="vendas.html"
-                        class="card-link"
-                    >
+</div>
+<a class="card-link" href="vendas.html">
                         Ver todas
                     </a>
-
-                </div>
-
-
-                <div class="table-container">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>
                                     Comanda
                                 </th>
-
-                                <th>
+<th>
                                     Cliente
                                 </th>
-
-                                <th>
+<th>
                                     Data
                                 </th>
-
-                                <th>
+<th>
                                     Pagamento
                                 </th>
-
-                                <th>
+<th>
                                     Total
                                 </th>
-
-                                <th>
+<th>
                                     Ações
                                 </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody id="vendasRecentes">
-
-                            <tr>
-
-                                <td
-                                    colspan="6"
-                                    class="empty"
-                                >
+</tr>
+</thead>
+<tbody id="vendasRecentes">
+<tr>
+<td class="empty" colspan="6">
                                     Nenhuma venda registrada.
                                 </td>
-
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================================
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- ==================================
                  ESTOQUE BAIXO
                  ================================== -->
-
-            <div class="card">
-
-                <div class="card-header">
-
-                    <div>
-
-                        <h2>
+<div class="card">
+<div class="card-header">
+<div>
+<h2>
                             Estoque baixo
                         </h2>
-
-                        <p>
+<p>
                             Produtos que precisam de reposição
                         </p>
-
-                    </div>
-
-                    <a
-                        href="produtos.html"
-                        class="card-link"
-                    >
+</div>
+<a class="card-link" href="produtos.html">
                         Ver estoque
                     </a>
-
-                </div>
-
-
-                <div
-                    id="estoqueBaixo"
-                    class="stock-list"
-                >
-
-                    <div class="empty-stock">
-
-                        <div>
-                            📦
-                        </div>
-
-                        <p>
+</div>
+<div class="stock-list" id="estoqueBaixo">
+<div class="empty-stock">
+<div class="empty-stock-icon-wrap"><svg class="empty-stock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 8-9-5-9 5 9 5 9-5Z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v9"/><path d="M3 8v9l9 5 9-5V8"/></svg></div>
+<p>
                             Nenhum produto com estoque baixo.
                         </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-        </section>
-
-
-        <!-- ======================================
+</div>
+</div>
+</div>
+</section>
+<!-- ======================================
+             PEDIDOS EM PRODUÇÃO
+             ====================================== -->
+<section class="card dashboard-orders-card" id="pedidosDashboardCard">
+<div class="card-header dashboard-orders-header">
+<div>
+<span class="dashboard-orders-eyebrow">Pedidos</span>
+<h2>Pedidos em produção</h2>
+<p>Acompanhe os pedidos ativos diretamente pelo Dashboard.</p>
+</div>
+<div class="dashboard-orders-summary">
+<span>Em produção</span>
+<strong id="pedidosProducaoDashboard">0</strong>
+<small id="pedidosTotalDashboard">0 pedidos registrados</small>
+</div>
+</div>
+<div class="table-container dashboard-orders-table-wrap">
+<table class="dashboard-orders-table">
+<thead><tr><th>Pedido</th><th>Cliente</th><th>Descrição</th><th>Prazo</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
+<tbody id="pedidosRecentesDashboard"><tr><td class="empty" colspan="7">Nenhum pedido em produção.</td></tr></tbody>
+</table>
+</div>
+<div class="pending-dashboard-footer">
+<span>Pedidos concluídos e cancelados continuam disponíveis no histórico.</span>
+<a class="pending-dashboard-link" href="pedidos.html">Abrir pedidos</a>
+</div>
+</section>
+<!-- ======================================
              VALORES AGUARDANDO PAGAMENTO
              ====================================== -->
-
-        <section class="card pending-dashboard-card" id="contasReceberDashboard">
-
-            <div class="card-header pending-dashboard-header">
-
-                <div>
-                    <span class="pending-dashboard-eyebrow">Contas a receber</span>
-                    <h2>Valores aguardando pagamento</h2>
-                    <p>Vendas que ainda possuem saldo pendente.</p>
-                </div>
-
-                <div class="pending-dashboard-summary">
-                    <span>Total a receber</span>
-                    <strong id="totalPendenteDashboard">R$ 0,00</strong>
-                    <small id="quantidadePendenciasDashboard">0 vendas pendentes</small>
-                </div>
-
-            </div>
-
-            <div class="table-container pending-dashboard-table-wrap">
-                <table class="pending-dashboard-table">
-                    <thead>
-                        <tr>
-                            <th>Comanda</th>
-                            <th>Cliente</th>
-                            <th>Data</th>
-                            <th>Total</th>
-                            <th>Pago</th>
-                            <th>A receber</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pagamentosPendentesDashboard">
-                        <tr>
-                            <td colspan="8" class="empty">Nenhum valor aguardando pagamento.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="pending-dashboard-footer">
-                <span>Os valores são atualizados automaticamente conforme os recebimentos são registrados.</span>
-                <a href="vendas.html#historico-vendas" class="pending-dashboard-link">Gerenciar recebimentos</a>
-            </div>
-
-        </section>
-
-
-        <!-- ======================================
+<section class="card pending-dashboard-card" id="contasReceberDashboard">
+<div class="card-header pending-dashboard-header">
+<div>
+<span class="pending-dashboard-eyebrow">Contas a receber</span>
+<h2>Valores aguardando pagamento</h2>
+<p>Vendas que ainda possuem saldo pendente.</p>
+</div>
+<div class="pending-dashboard-summary">
+<span>Total a receber</span>
+<strong id="totalPendenteDashboard">R$ 0,00</strong>
+<small id="quantidadePendenciasDashboard">0 vendas pendentes</small>
+</div>
+</div>
+<div class="table-container pending-dashboard-table-wrap">
+<table class="pending-dashboard-table">
+<thead>
+<tr>
+<th>Comanda</th>
+<th>Cliente</th>
+<th>Data</th>
+<th>Total</th>
+<th>Pago</th>
+<th>A receber</th>
+<th>Status</th>
+<th>Ações</th>
+</tr>
+</thead>
+<tbody id="pagamentosPendentesDashboard">
+<tr>
+<td class="empty" colspan="8">Nenhum valor aguardando pagamento.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pending-dashboard-footer">
+<span>Os valores são atualizados automaticamente conforme os recebimentos são registrados.</span>
+<a class="pending-dashboard-link" href="vendas.html#historico-vendas">Gerenciar recebimentos</a>
+</div>
+</section>
+<!-- ======================================
              RESUMO DO CAIXA
              ====================================== -->
-
-        <section class="card cash-summary">
-
-            <div class="card-header">
-
-                <div>
-
-                    <h2>
+<section class="card cash-summary">
+<div class="card-header">
+<div>
+<h2>
                         Resumo do caixa
                     </h2>
-
-                    <p>
+<p>
                         Movimentações do mês atual
                     </p>
-
-                </div>
-
-                <a
-                    href="caixa.html"
-                    class="card-link"
-                >
+</div>
+<a class="card-link" href="caixa.html">
                     Abrir caixa
                 </a>
-
-            </div>
-
-
-            <div class="cash-grid">
-
-
-                <!-- ENTRADAS -->
-
-                <div class="cash-item">
-
-                    <span>
+</div>
+<div class="cash-grid">
+<!-- ENTRADAS -->
+<div class="cash-item">
+<span>
                         Entradas
                     </span>
-
-                    <strong id="entradasMes">
+<strong id="entradasMes">
                         R$ 0,00
                     </strong>
-
-                </div>
-
-
-                <!-- SAÍDAS -->
-
-                <div class="cash-item">
-
-                    <span>
+</div>
+<!-- SAÍDAS -->
+<div class="cash-item">
+<span>
                         Saídas
                     </span>
-
-                    <strong id="saidasMes">
+<strong id="saidasMes">
                         R$ 0,00
                     </strong>
-
-                </div>
-
-
-                <!-- SALDO -->
-
-                <div class="cash-item">
-
-                    <span>
+</div>
+<!-- SALDO -->
+<div class="cash-item">
+<span>
                         Saldo
                     </span>
-
-                    <strong id="saldoMes">
+<strong id="saldoMes">
                         R$ 0,00
                     </strong>
-
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-        <!-- ======================================
+</div>
+</div>
+</section>
+<!-- ======================================
              RODAPÉ
              ====================================== -->
-
-        <footer class="footer">
-
-            <span>
+<footer class="footer">
+<span>
                 Marcelino Bordados © 2026
             </span>
-
-            <span>
+<span>
                 Sistema local
             </span>
-
-        </footer>
-
-
-    </main>
-
-
-    <!-- ==========================================
+</footer>
+</main>
+<!-- ==========================================
          BANCO DE DADOS
          ========================================== -->
-
-    <script src="js/supabase-config.js?v=18"></script>
-<script src="js/online.js?v=18"></script>
-<script src="js/database.js?v=18"></script>
-
-
-    <!-- ==========================================
+<script src="js/popup.js?v=28"></script>
+<script src="js/supabase-config.js?v=21"></script>
+<script src="js/online.js?v=31"></script>
+<script src="js/database.js?v=21"></script>
+<!-- ==========================================
          DASHBOARD
          ========================================== -->
-
-    <script>
+<script>
 
         document.addEventListener(
             "DOMContentLoaded",
@@ -705,56 +390,51 @@
         }
 
     </script>
-
-    <script src="js/ui.js?v=18"></script>
-
-
-    <!-- MODAL: DETALHES DA VENDA -->
-    <div id="modalVenda" class="sale-detail-modal" aria-hidden="true">
-        <div class="sale-detail-overlay" onclick="fecharDetalhesVenda()"></div>
-        <div class="sale-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="detalheComanda">
-            <div class="sale-detail-header">
-                <div>
-                    <span class="sale-detail-label">Detalhes da venda</span>
-                    <h2 id="detalheComanda">Comanda #000000</h2>
-                </div>
-                <button type="button" class="sale-detail-close" onclick="fecharDetalhesVenda()" aria-label="Fechar">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                        <path d="M18 6 6 18"></path><path d="m6 6 12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            <div class="sale-detail-body">
-                <div class="sale-detail-info-grid">
-                    <div class="sale-detail-info"><span>Cliente</span><strong id="detalheCliente">-</strong></div>
-                    <div class="sale-detail-info"><span>Data</span><strong id="detalheData">-</strong></div>
-                    <div class="sale-detail-info"><span>Pagamento</span><strong id="detalhePagamento">-</strong></div>
-                    <div class="sale-detail-info"><span>Total</span><strong id="detalheTotalTopo" class="sale-detail-total-highlight">R$ 0,00</strong></div>
-                </div>
-                <div class="sale-detail-products">
-                    <div class="sale-detail-section-title">
-                        <div><h3>Itens vendidos</h3><p>Produtos incluídos nesta compra.</p></div>
-                        <span id="detalheQuantidadeItens">0 itens</span>
-                    </div>
-                    <div class="sale-detail-table-wrapper">
-                        <table class="sale-detail-table">
-                            <thead><tr><th>Produto</th><th>Qtd.</th><th>Preço</th><th>Total</th></tr></thead>
-                            <tbody id="detalheProdutos"></tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="sale-detail-summary">
-                    <div><span>Subtotal</span><strong id="detalheSubtotal">R$ 0,00</strong></div>
-                    <div><span>Desconto</span><strong id="detalheDesconto">R$ 0,00</strong></div>
-                    <div class="sale-detail-summary-total"><span>Total da venda</span><strong id="detalheTotal">R$ 0,00</strong></div>
-                </div>
-            </div>
-            <div class="sale-detail-footer">
-                <button type="button" class="sale-detail-secondary-button" onclick="fecharDetalhesVenda()">Fechar</button>
-            </div>
-        </div>
-    </div>
-
+<script src="js/ui.js?v=32"></script>
+<!-- MODAL: DETALHES DA VENDA -->
+<div aria-hidden="true" class="sale-detail-modal" id="modalVenda">
+<div class="sale-detail-overlay" onclick="fecharDetalhesVenda()"></div>
+<div aria-labelledby="detalheComanda" aria-modal="true" class="sale-detail-dialog" role="dialog">
+<div class="sale-detail-header">
+<div>
+<span class="sale-detail-label">Detalhes da venda</span>
+<h2 id="detalheComanda">Comanda #000000</h2>
+</div>
+<button aria-label="Fechar" class="sale-detail-close" onclick="fecharDetalhesVenda()" type="button">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M18 6 6 18"></path><path d="m6 6 12 12"></path>
+</svg>
+</button>
+</div>
+<div class="sale-detail-body">
+<div class="sale-detail-info-grid">
+<div class="sale-detail-info"><span>Cliente</span><strong id="detalheCliente">-</strong></div>
+<div class="sale-detail-info"><span>Data</span><strong id="detalheData">-</strong></div>
+<div class="sale-detail-info"><span>Pagamento</span><strong id="detalhePagamento">-</strong></div>
+<div class="sale-detail-info"><span>Total</span><strong class="sale-detail-total-highlight" id="detalheTotalTopo">R$ 0,00</strong></div>
+</div>
+<div class="sale-detail-products">
+<div class="sale-detail-section-title">
+<div><h3>Itens vendidos</h3><p>Produtos incluídos nesta compra.</p></div>
+<span id="detalheQuantidadeItens">0 itens</span>
+</div>
+<div class="sale-detail-table-wrapper">
+<table class="sale-detail-table">
+<thead><tr><th>Produto</th><th>Qtd.</th><th>Preço</th><th>Total</th></tr></thead>
+<tbody id="detalheProdutos"></tbody>
+</table>
+</div>
+</div>
+<div class="sale-detail-summary">
+<div><span>Subtotal</span><strong id="detalheSubtotal">R$ 0,00</strong></div>
+<div><span>Desconto</span><strong id="detalheDesconto">R$ 0,00</strong></div>
+<div class="sale-detail-summary-total"><span>Total da venda</span><strong id="detalheTotal">R$ 0,00</strong></div>
+</div>
+</div>
+<div class="sale-detail-footer">
+<button class="sale-detail-secondary-button" onclick="fecharDetalhesVenda()" type="button">Fechar</button>
+</div>
+</div>
+</div>
 </body>
-
 </html>

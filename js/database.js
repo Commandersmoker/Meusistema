@@ -14,6 +14,7 @@ const databaseDefault = {
     produtos: [],
     clientes: [],
     vendas: [],
+    pedidos: [],
     caixa: [],
     usuarios: [],
     estoqueMovimentacoes: [],
@@ -98,6 +99,10 @@ function garantirEstrutura(banco) {
 
     base.vendas = Array.isArray(dados.vendas)
         ? dados.vendas.map(venda => normalizarVendaFinanceira(venda))
+        : [];
+
+    base.pedidos = Array.isArray(dados.pedidos)
+        ? dados.pedidos
         : [];
 
     base.caixa = Array.isArray(dados.caixa)
@@ -348,6 +353,10 @@ function atualizarDashboard() {
 
         "pagamentosPendentesDashboard",
 
+        "pedidosProducaoDashboard",
+        "pedidosTotalDashboard",
+        "pedidosRecentesDashboard",
+
         "entradasMes",
 
         "saidasMes",
@@ -542,6 +551,8 @@ function atualizarDashboard() {
         vendas
     );
 
+    carregarPedidosDashboard(banco.pedidos || []);
+
     atualizarCaixaDashboard(
         banco,
         mes,
@@ -600,7 +611,7 @@ function abrirDetalhesVenda(idVenda) {
     const venda = banco.vendas.find(item => String(item.id) === String(idVenda));
 
     if (!venda) {
-        alert("Venda não encontrada.");
+        AppPopup.alert("Venda não encontrada.");
         return;
     }
 
@@ -661,6 +672,27 @@ if (!window.__detalheVendaEscapeRegistrado) {
         if (evento.key === "Escape") fecharDetalhesVenda();
     });
     window.__detalheVendaEscapeRegistrado = true;
+}
+
+function carregarPedidosDashboard(pedidos) {
+    const tbody = document.getElementById("pedidosRecentesDashboard");
+    const producaoEl = document.getElementById("pedidosProducaoDashboard");
+    const totalEl = document.getElementById("pedidosTotalDashboard");
+    if (!tbody && !producaoEl && !totalEl) return;
+    const lista = Array.isArray(pedidos) ? pedidos : [];
+    const producao = lista.filter(p => (p.status || "producao") === "producao");
+    if (producaoEl) producaoEl.textContent = String(producao.length);
+    if (totalEl) totalEl.textContent = `${lista.length} ${lista.length === 1 ? "pedido registrado" : "pedidos registrados"}`;
+    if (!tbody) return;
+    const recentes = [...producao].sort((a,b)=>new Date(b.criadoEm||0)-new Date(a.criadoEm||0)).slice(0,5);
+    if (!recentes.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty">Nenhum pedido em produção.</td></tr>'; return; }
+    tbody.innerHTML = recentes.map(p => {
+        const numero=String(p.numero||0).padStart(4,"0");
+        const total=Number(p.valor||0);
+        const qtd=(Array.isArray(p.itens)?p.itens:[]).reduce((t,i)=>t+Number(i.quantidade||0),0);
+        let prazo="—"; if(p.prazo){const [a,m,d]=String(p.prazo).split("-"); prazo=a&&m&&d?`${d}/${m}/${a}`:p.prazo;}
+        return `<tr><td><strong>#${numero}</strong></td><td>${escapeHtml(p.cliente||"Consumidor não identificado")}</td><td><strong>${escapeHtml(p.titulo||"Pedido")}</strong><small class="dashboard-order-item-count">${qtd ? `${qtd} ${qtd===1?'item':'itens'}` : 'Sem itens'}</small></td><td>${escapeHtml(prazo)}</td><td><strong>${formatarMoeda(total)}</strong></td><td><span class="dashboard-order-status">Em produção</span></td><td><div class="dashboard-order-actions"><a href="pedidos.html?ver=${encodeURIComponent(p.id)}" class="dashboard-order-view">Ver</a><a href="vendas.html?pedido=${encodeURIComponent(p.id)}" class="dashboard-order-sale">Venda</a></div></td></tr>`;
+    }).join("");
 }
 
 function carregarPagamentosPendentesDashboard(vendas) {
@@ -758,7 +790,7 @@ function carregarEstoqueBaixo(
 
             <div class="empty-stock">
 
-                <div>📦</div>
+                <div class="empty-stock-icon-wrap"><svg class="empty-stock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 8-9-5-9 5 9 5 9-5Z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v9"/><path d="M3 8v9l9 5 9-5V8"/></svg></div>
 
                 <p>
                     Nenhum produto com

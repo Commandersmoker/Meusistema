@@ -1,700 +1,293 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
 
+<html class="ui-preparing" lang="pt-BR">
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    >
-
-    <title>Clientes | Marcelino Bordados</title>
-
-    <link
-        rel="stylesheet"
-        href="css/style.css?v=18"
-    >
-
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Clientes | Marcelino Bordados</title>
+<link href="css/style.css?v=32" rel="stylesheet"/>
 </head>
-
 <body>
-
-    <!-- =========================
+<!-- =========================
          SIDEBAR
     ========================== -->
-
-    <aside class="sidebar">
-
-        <div class="logo">
-
-            <div class="logo-icon">
-                A
-            </div>
-
-            <div>
-
-                <h1>Marcelino</h1>
-
-                <span>
-                    Bordados
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <nav class="menu">
-
-            <a
-                href="index.html"
-                class="menu-item"
-            >
-                <span>⌂</span>
-                <span>Dashboard</span>
-            </a>
-
-
-            <a
-                href="vendas.html"
-                class="menu-item"
-            >
-                <span>🛒</span>
-                <span>Vendas</span>
-            </a>
-
-
-            <a
-                href="produtos.html"
-                class="menu-item"
-            >
-                <span>📦</span>
-                <span>Estoque</span>
-            </a>
-
-
-            <a
-                href="clientes.html"
-                class="menu-item active"
-            >
-                <span>👥</span>
-                <span>Clientes</span>
-            </a>
-
-
-            <a
-                href="caixa.html"
-                class="menu-item"
-            >
-                <span>💰</span>
-                <span>Caixa</span>
-            </a>
-
-
-            <a
-                href="relatorios.html"
-                class="menu-item"
-            >
-                <span>📊</span>
-                <span>Relatórios</span>
-            </a>
-
-        </nav>
-
-
-        <div class="sidebar-bottom">
-
-            <a
-                href="#"
-                class="menu-item"
-            >
-                <span>⚙️</span>
-                <span>Configurações</span>
-            </a>
-
-
-            <div class="system-version">
-                Versão 1.0.0
-            </div>
-
-        </div>
-
-    </aside>
-
-
-
-    <!-- =========================
+<aside class="sidebar"><div class="logo"><div class="logo-icon">M</div><div><strong>Marcelino</strong><span>Bordados</span></div></div><nav class="menu"><a class="menu-item" href="index.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><rect height="7" rx="2" width="7" x="3" y="3"></rect><rect height="7" rx="2" width="7" x="14" y="3"></rect><rect height="7" rx="2" width="7" x="3" y="14"></rect><rect height="7" rx="2" width="7" x="14" y="14"></rect></svg><span>Dashboard</span></a><a class="menu-item" href="vendas.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><circle cx="9" cy="20" r="1"></circle><circle cx="19" cy="20" r="1"></circle><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"></path></svg><span>Vendas</span></a><a class="menu-item" href="pedidos.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M9 5h6"></path><path d="M9 9h6"></path><path d="M9 13h4"></path><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"></path><path d="m15 17 2 2 4-4"></path></svg><span>Pedidos</span></a><a class="menu-item" href="produtos.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="m21 8-9-5-9 5 9 5 9-5Z"></path><path d="m3 8 9 5 9-5"></path><path d="M12 13v9"></path><path d="M3 8v9l9 5 9-5V8"></path></svg><span>Produtos</span></a><a class="menu-item active" href="clientes.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Clientes</span></a><a class="menu-item" href="caixa.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M20 7V6a2 2 0 0 0-2-2H5a3 3 0 0 0 0 6h15v8a2 2 0 0 1-2 2H5a3 3 0 0 1-3-3V7"></path><path d="M16 14h.01"></path></svg><span>Caixa</span></a><a class="menu-item" href="relatorios.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M3 3v18h18"></path><path d="m7 16 4-5 4 3 5-7"></path></svg><span>Relatórios</span></a><a class="menu-item" href="configuracoes.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.1A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.1A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9c.16.36.4.7.7 1 .3.3.68.46 1.1.5H21v4h-.1a1.7 1.7 0 0 0-1.5.5Z"></path></svg><span>Configurações</span></a><a class="menu-item" href="backup.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v6c0 1.7 4 3 9 3s9-1.3 9-3V5"></path><path d="M3 11v6c0 1.7 4 3 9 3s9-1.3 9-3v-6"></path></svg><span>Backup</span></a></nav><div class="sidebar-bottom"><a class="menu-item logout" data-action="logout" href="#"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M10 17l5-5-5-5"></path><path d="M15 12H3"></path><path d="M21 19V5a2 2 0 0 0-2-2h-6"></path></svg><span>Sair</span></a><div class="system-version">Versão 3.1.0 Online</div></div></aside>
+<!-- =========================
          MAIN
     ========================== -->
-
-    <main class="main">
-
-
-        <!-- TOPBAR -->
-
-        <header class="topbar">
-
-            <div>
-
-                <h2>
+<main class="main">
+<!-- TOPBAR -->
+<header class="topbar">
+<div>
+<h2>
                     Clientes
                 </h2>
-
-                <p>
+<p>
                     Cadastro e relacionamento com clientes
                 </p>
-
-            </div>
-
-
-            <div class="topbar-actions header-create-actions">
-
-                <button
-                    type="button"
-                    class="primary-button header-create-button"
-                    onclick="abrirModalCliente()"
-                >
-                    <span class="header-create-label">+ Novo cliente</span>
-                </button>
-
-            </div>
-
-        </header>
-
-
-
-        <!-- =========================
+</div>
+<div class="topbar-actions header-create-actions">
+<button class="primary-button header-create-button" onclick="abrirModalCliente()" type="button">
+<span class="header-create-label">+ Novo cliente</span>
+</button>
+</div>
+</header>
+<!-- =========================
              ESTATÍSTICAS
         ========================== -->
-
-        <section class="stats">
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon clients">
-                    👥
-                </div>
-
-                <div class="stat-content">
-
-                    <span>
+<section class="stats">
+<div class="stat-card">
+<div class="stat-icon clients"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+<div class="stat-content">
+<span>
                         Total de clientes
                     </span>
-
-                    <strong id="totalClientesPagina">
+<strong id="totalClientesPagina">
                         0
                     </strong>
-
-                    <small>
+<small>
                         Clientes cadastrados
                     </small>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon revenue">
-                    💰
-                </div>
-
-                <div class="stat-content">
-
-                    <span>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon revenue"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M20 7V6a2 2 0 0 0-2-2H5a3 3 0 0 0 0 6h15v8a2 2 0 0 1-2 2H5a3 3 0 0 1-3-3V7"></path><path d="M16 14h.01"></path></svg></div>
+<div class="stat-content">
+<span>
                         Total em vendas
                     </span>
-
-                    <strong id="totalVendasClientes">
+<strong id="totalVendasClientes">
                         R$ 0,00
                     </strong>
-
-                    <small>
+<small>
                         Vendas vinculadas
                     </small>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon sales">
-                    🛒
-                </div>
-
-                <div class="stat-content">
-
-                    <span>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon sales"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M3 3v18h18"></path><path d="m7 16 4-5 4 3 5-7"></path></svg></div>
+<div class="stat-content">
+<span>
                         Compras realizadas
                     </span>
-
-                    <strong id="quantidadeComprasClientes">
+<strong id="quantidadeComprasClientes">
                         0
                     </strong>
-
-                    <small>
+<small>
                         Vendas registradas
                     </small>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon stock">
-                    ⭐
-                </div>
-
-                <div class="stat-content">
-
-                    <span>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon stock"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="m21 8-9-5-9 5 9 5 9-5Z"></path><path d="m3 8 9 5 9-5"></path><path d="M12 13v9"></path><path d="M3 8v9l9 5 9-5V8"></path></svg></div>
+<div class="stat-content">
+<span>
                         Cliente destaque
                     </span>
-
-                    <strong
-                        id="clienteDestaque"
-                        class="customer-highlight"
-                    >
+<strong class="customer-highlight" id="clienteDestaque">
                         —
                     </strong>
-
-                    <small>
+<small>
                         Maior volume de compras
                     </small>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =========================
+</div>
+</div>
+</section>
+<!-- =========================
              CONTROLE FINANCEIRO DO CLIENTE
         ========================== -->
-        <section class="customer-finance-panel">
-            <div class="customer-finance-header">
-                <div><span class="section-eyebrow">Financeiro</span><h3>Consultar pagamentos por cliente</h3><p>Pesquise um cliente para conferir o total comprado, quanto já pagou e quanto ainda falta pagar.</p></div>
-                <div class="customer-finance-search"><input type="search" id="buscarFinanceiroCliente" placeholder="Buscar por nome, CPF/CNPJ, telefone ou e-mail..."></div>
-            </div>
-            <div id="resultadoFinanceiroClientes" class="customer-finance-results"><div class="customer-finance-empty">Digite o nome ou os dados do cliente para consultar a situação financeira.</div></div>
-        </section>
-
-        <!-- =========================
+<section class="customer-finance-panel">
+<div class="customer-finance-header">
+<div><span class="section-eyebrow">Financeiro</span><h3>Consultar pagamentos por cliente</h3><p>Pesquise um cliente para conferir o total comprado, quanto já pagou e quanto ainda falta pagar.</p></div>
+<div class="customer-finance-search"><input id="buscarFinanceiroCliente" placeholder="Buscar por nome, CPF/CNPJ, telefone ou e-mail..." type="search"/></div>
+</div>
+<div class="customer-finance-results" id="resultadoFinanceiroClientes"><div class="customer-finance-empty">Digite o nome ou os dados do cliente para consultar a situação financeira.</div></div>
+</section>
+<!-- =========================
              LISTA DE CLIENTES
         ========================== -->
-
-        <section class="panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <h3>
+<section class="panel">
+<div class="panel-header">
+<div>
+<h3>
                         Clientes cadastrados
                     </h3>
-
-                    <p>
+<p>
                         Gerencie os dados dos seus clientes
                     </p>
-
-                </div>
-
-
-                <div class="search-box">
-
-                    <input
-                        type="text"
-                        id="buscarCliente"
-                        placeholder="🔎 Buscar cliente..."
-                        oninput="listarClientes()"
-                    >
-
-                </div>
-
-            </div>
-
-
-
-            <div class="table-container">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
+</div>
+<div class="search-box">
+<input id="buscarCliente" oninput="listarClientes()" placeholder="Buscar cliente..." type="text"/>
+</div>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>
                                 Cliente
                             </th>
-
-                            <th>
+<th>
                                 CPF/CNPJ
                             </th>
-
-                            <th>
+<th>
                                 Telefone
                             </th>
-
-                            <th>
+<th>
                                 E-mail
                             </th>
-
-                            <th>
+<th>
                                 Compras
                             </th>
-
-                            <th>
+<th>
                                 Total
                             </th>
-
-                            <th>
+<th>
                                 Cadastro
                             </th>
-
-                            <th>
+<th>
                                 Ações
                             </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody id="listaClientes">
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =========================
+</tr>
+</thead>
+<tbody id="listaClientes">
+</tbody>
+</table>
+</div>
+</section>
+<!-- =========================
              RODAPÉ
         ========================== -->
-
-        <footer>
-
-            <span>
+<footer>
+<span>
                 Marcelino Bordados © 2026
             </span>
-
-            <span>
+<span>
                 Sistema local
             </span>
-
-        </footer>
-
-    </main>
-
-
-
-    <!-- =========================
+</footer>
+</main>
+<!-- =========================
          MODAL CLIENTE
     ========================== -->
-
-    <div
-        id="modalCliente"
-        class="modal"
-    >
-
-        <div class="modal-content">
-
-
-            <div class="modal-header">
-
-                <div>
-
-                    <h3 id="tituloModalCliente">
+<div class="modal" id="modalCliente">
+<div class="modal-content">
+<div class="modal-header">
+<div>
+<h3 id="tituloModalCliente">
                         Novo cliente
                     </h3>
-
-                    <p>
+<p>
                         Preencha os dados do cliente
                     </p>
-
-                </div>
-
-
-                <button
-                    class="close-button"
-                    onclick="fecharModalCliente()"
-                >
+</div>
+<button class="close-button" onclick="fecharModalCliente()">
                     ×
                 </button>
-
-            </div>
-
-
-
-            <form
-                id="formCliente"
-                onsubmit="salvarCliente(event)"
-            >
-
-                <input
-                    type="hidden"
-                    id="clienteId"
-                >
-
-
-                <div class="form-grid">
-
-
-                    <!-- NOME -->
-
-                    <div class="form-group full-width">
-
-                        <label>
+</div>
+<form id="formCliente" onsubmit="salvarCliente(event)">
+<input id="clienteId" type="hidden"/>
+<div class="form-grid">
+<!-- NOME -->
+<div class="form-group full-width">
+<label>
                             Nome completo
                         </label>
-
-                        <input
-                            type="text"
-                            id="clienteNome"
-                            placeholder="Ex: João da Silva"
-                            required
-                        >
-
-                    </div>
-
-
-                    <!-- CPF -->
-
-                    <div class="form-group">
-
-                        <label>
+<input id="clienteNome" placeholder="Ex: João da Silva" required="" type="text"/>
+</div>
+<!-- CPF -->
+<div class="form-group">
+<label>
                             CPF/CNPJ
                         </label>
-
-                        <input
-                            type="text"
-                            id="clienteDocumento"
-                            placeholder="Opcional"
-                        >
-
-                    </div>
-
-
-                    <!-- TELEFONE -->
-
-                    <div class="form-group">
-
-                        <label>
+<input id="clienteDocumento" placeholder="Opcional" type="text"/>
+</div>
+<!-- TELEFONE -->
+<div class="form-group">
+<label>
                             Telefone / WhatsApp
                         </label>
-
-                        <input
-                            type="text"
-                            id="clienteTelefone"
-                            placeholder="(00) 00000-0000"
-                        >
-
-                    </div>
-
-
-                    <!-- EMAIL -->
-
-                    <div class="form-group full-width">
-
-                        <label>
+<input id="clienteTelefone" placeholder="(00) 00000-0000" type="text"/>
+</div>
+<!-- EMAIL -->
+<div class="form-group full-width">
+<label>
                             E-mail
                         </label>
-
-                        <input
-                            type="email"
-                            id="clienteEmail"
-                            placeholder="cliente@email.com"
-                        >
-
-                    </div>
-
-
-                    <!-- CEP -->
-
-                    <div class="form-group">
-
-                        <label>
+<input id="clienteEmail" placeholder="cliente@email.com" type="email"/>
+</div>
+<!-- CEP -->
+<div class="form-group">
+<label>
                             CEP
                         </label>
-
-                        <input
-                            type="text"
-                            id="clienteCep"
-                            placeholder="00000-000"
-                        >
-
-                    </div>
-
-
-                    <!-- CIDADE -->
-
-                    <div class="form-group">
-
-                        <label>
+<input id="clienteCep" placeholder="00000-000" type="text"/>
+</div>
+<!-- CIDADE -->
+<div class="form-group">
+<label>
                             Cidade
                         </label>
-
-                        <input
-                            type="text"
-                            id="clienteCidade"
-                            placeholder="Cidade"
-                        >
-
-                    </div>
-
-
-                    <!-- ENDEREÇO -->
-
-                    <div class="form-group full-width">
-
-                        <label>
+<input id="clienteCidade" placeholder="Cidade" type="text"/>
+</div>
+<!-- ENDEREÇO -->
+<div class="form-group full-width">
+<label>
                             Endereço
                         </label>
-
-                        <input
-                            type="text"
-                            id="clienteEndereco"
-                            placeholder="Rua, número, bairro..."
-                        >
-
-                    </div>
-
-
-                    <!-- OBSERVAÇÕES -->
-
-                    <div class="form-group full-width">
-
-                        <label>
+<input id="clienteEndereco" placeholder="Rua, número, bairro..." type="text"/>
+</div>
+<!-- OBSERVAÇÕES -->
+<div class="form-group full-width">
+<label>
                             Observações
                         </label>
-
-                        <textarea
-                            id="clienteObservacoes"
-                            rows="4"
-                            placeholder="Informações adicionais..."
-                        ></textarea>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="modal-actions">
-
-                    <button
-                        type="button"
-                        class="secondary-button"
-                        onclick="fecharModalCliente()"
-                    >
+<textarea id="clienteObservacoes" placeholder="Informações adicionais..." rows="4"></textarea>
+</div>
+</div>
+<div class="modal-actions">
+<button class="secondary-button" onclick="fecharModalCliente()" type="button">
                         Cancelar
                     </button>
-
-
-                    <button
-                        type="submit"
-                        class="primary-button"
-                    >
+<button class="primary-button" type="submit">
                         Salvar cliente
                     </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =========================
+</div>
+</form>
+</div>
+</div>
+<!-- =========================
          MODAL DETALHES
     ========================== -->
-
-    <div
-        id="modalDetalhesCliente"
-        class="modal"
-    >
-
-        <div class="modal-content">
-
-
-            <div class="modal-header">
-
-                <div>
-
-                    <h3 id="detalhesNome">
+<div class="modal" id="modalDetalhesCliente">
+<div class="modal-content">
+<div class="modal-header">
+<div>
+<h3 id="detalhesNome">
                         Cliente
                     </h3>
-
-                    <p>
+<p>
                         Informações do cliente
                     </p>
-
-                </div>
-
-
-                <button
-                    class="close-button"
-                    onclick="fecharDetalhesCliente()"
-                >
+</div>
+<button class="close-button" onclick="fecharDetalhesCliente()">
                     ×
                 </button>
-
-            </div>
-
-
-
-            <div
-                id="detalhesCliente"
-                class="customer-details"
-            >
-
-            </div>
-
-
-
-            <div class="modal-actions">
-
-                <button
-                    class="secondary-button"
-                    onclick="fecharDetalhesCliente()"
-                >
+</div>
+<div class="customer-details" id="detalhesCliente">
+</div>
+<div class="modal-actions">
+<button class="secondary-button" onclick="fecharDetalhesCliente()">
                     Fechar
                 </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <script src="js/supabase-config.js?v=18"></script>
-<script src="js/online.js?v=18"></script>
-<script src="js/database.js?v=18"></script>
-    <script src="js/clientes.js"></script>
-
-    <script src="js/ui.js?v=18"></script>
+</div>
+</div>
+</div>
+<script src="js/popup.js?v=28"></script>
+<script src="js/supabase-config.js?v=21"></script>
+<script src="js/online.js?v=31"></script>
+<script src="js/database.js?v=21"></script>
+<script src="js/clientes.js"></script>
+<script src="js/ui.js?v=32"></script>
 </body>
-
 </html>

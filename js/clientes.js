@@ -59,7 +59,7 @@ function abrirModalCliente(id = null) {
 
         if (!cliente) {
 
-            alert(
+            AppPopup.alert(
                 "Cliente não encontrado."
             );
 
@@ -233,7 +233,7 @@ function salvarCliente(event) {
 
     if (!nome) {
 
-        alert(
+        AppPopup.alert(
             "Informe o nome do cliente."
         );
 
@@ -268,7 +268,7 @@ function salvarCliente(event) {
 
         if (documentoExistente) {
 
-            alert(
+            AppPopup.alert(
                 "Já existe um cliente cadastrado com este CPF/CNPJ."
             );
 
@@ -336,7 +336,7 @@ function salvarCliente(event) {
 
         if (indice === -1) {
 
-            alert(
+            AppPopup.alert(
                 "Cliente não encontrado."
             );
 
@@ -390,7 +390,7 @@ function salvarCliente(event) {
     atualizarResumoClientes();
 
 
-    alert(
+    AppPopup.alert(
         "Cliente salvo com sucesso!"
     );
 
@@ -758,7 +758,7 @@ function atualizarResumoClientes() {
 ==================================================
 */
 
-function excluirCliente(id) {
+async function excluirCliente(id) {
 
     const banco =
         obterBanco();
@@ -804,7 +804,7 @@ function excluirCliente(id) {
 
 
     const confirmar =
-        confirm(
+        await AppPopup.confirm(
             mensagem
         );
 

@@ -94,7 +94,7 @@ function calcularResumo(vendas, banco, dataInicial, dataFinal) {
         if (!Array.isArray(venda.produtos)) return total;
 
         return total + venda.produtos.reduce(
-            (soma, item) => soma + Number(item.quantidade || item.qtd || 0),
+            (soma, item) => item.personalizado ? soma : soma + Number(item.quantidade || item.qtd || 0),
             0
         );
     }, 0);
@@ -176,6 +176,7 @@ function listarProdutosMaisVendidos(vendas) {
         if (!Array.isArray(venda.produtos)) return;
 
         venda.produtos.forEach(item => {
+            if (item.personalizado) return;
             const nome = String(item.nome || item.produto || "Produto").trim();
             const quantidade = Number(item.quantidade || item.qtd || 0);
             const preco = Number(item.preco || item.valor || 0);
@@ -314,7 +315,7 @@ function listarVendas(vendas) {
     tbody.innerHTML = ordenadas.map(venda => {
         const quantidadeProdutos = Array.isArray(venda.produtos)
             ? venda.produtos.reduce(
-                (total, item) => total + Number(item.quantidade || item.qtd || 0),
+                (total, item) => item.personalizado ? total : total + Number(item.quantidade || item.qtd || 0),
                 0
             )
             : 0;

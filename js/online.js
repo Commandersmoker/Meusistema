@@ -190,6 +190,7 @@
         }, { onConflict: "user_id" });
         if (error) throw error;
         lastRemoteUpdatedAt = now;
+        sessionStorage.setItem("marcelinoLastSyncAt", now);
         return safe;
     }
 
@@ -211,6 +212,7 @@
         } else if (remote && remote.data) {
             putLocalDatabaseForUser(user.id, remote.data);
             lastRemoteUpdatedAt = remote.updated_at || null;
+            sessionStorage.setItem("marcelinoLastSyncAt", remote.updated_at || new Date().toISOString());
         } else {
             const seed = local || {
                 produtos: [], clientes: [], vendas: [], caixa: [], usuarios: [],
@@ -258,6 +260,7 @@
         if (changed) {
             localStorage.setItem(key, JSON.stringify(remoteSafe));
             lastRemoteUpdatedAt = remote.updated_at || null;
+            sessionStorage.setItem("marcelinoLastSyncAt", remote.updated_at || new Date().toISOString());
             window.dispatchEvent(new CustomEvent("marcelino:data-synced", {
                 detail: { source: "remote", reloadSuggested: Boolean(options.reloadSuggested) }
             }));

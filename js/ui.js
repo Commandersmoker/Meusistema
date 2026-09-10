@@ -3,6 +3,7 @@
    Sidebar, autenticação, usuário e ícones SVG.
    ================================================== */
 (function () {
+    document.documentElement.classList.add("ui-preparing");
     const PUBLIC_PAGES = ["login.html", "cadastro.html"];
 
     const ICONS = {
@@ -29,7 +30,13 @@
         refresh: '<path d="M20 11a8 8 0 1 0 2 5"/><path d="M20 4v7h-7"/>',
         alert: '<path d="M10.3 2.9 1.8 17a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 2.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>',
         star: '<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21 7 14.2 2 9.3l6.9-1Z"/>',
-        receipt: '<path d="M4 2v20l3-2 3 2 2-2 3 2 2-2 3 2V2l-3 2-3-2-2 2-3-2-2 2Z"/><path d="M16 8h-6M16 12h-6M14 16h-4"/>'
+        receipt: '<path d="M4 2v20l3-2 3 2 2-2 3 2 2-2 3 2V2l-3 2-3-2-2 2-3-2-2 2Z"/><path d="M16 8h-6M16 12h-6M14 16h-4"/>',
+        user: '<path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/>',
+        cloud: '<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/><path d="m9 15 3-3 3 3"/><path d="M12 12v7"/>',
+        chevron: '<path d="m6 9 6 6 6-6"/>',
+        check: '<path d="m20 6-11 11-5-5"/>',
+        clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+        orders: '<path d="M9 5h6"/><path d="M9 9h6"/><path d="M9 13h4"/><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="m15 17 2 2 4-4"/>'
     };
 
     function svg(name, cls = "menu-icon") {
@@ -64,6 +71,7 @@
         const menu = [
             ["index.html", "dashboard", "Dashboard"],
             ["vendas.html", "cart", "Vendas"],
+            ["pedidos.html", "orders", "Pedidos"],
             ["produtos.html", "package", "Produtos"],
             ["clientes.html", "users", "Clientes"],
             ["caixa.html", "wallet", "Caixa"],
@@ -80,7 +88,7 @@
             <nav class="menu">${links}</nav>
             <div class="sidebar-bottom">
                 <a href="#" class="menu-item logout" data-action="logout">${svg("logout")}<span>Sair</span></a>
-                <div class="system-version">Versão 1.8.0 Online</div>
+                <div class="system-version">Versão 3.1.0 Online</div>
             </div>`;
     }
 
@@ -106,14 +114,240 @@
     function mountUserHeader() {
         const header = document.querySelector(".topbar, .page-header");
         if (!header) return;
+
         const existing = header.querySelector(".user-area");
+        const previous = header.querySelector(".app-user-area");
+        if (previous) previous.remove();
+
         const name = sessionStorage.getItem("usuarioNome") || "Usuário";
+        const email = sessionStorage.getItem("usuarioEmail") || "";
         const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map(x => x[0]).join("").toUpperCase() || "M";
-        const html = `<div class="app-user-area"><div class="notification" title="Notificações">${svg("bell", "menu-icon")}</div><div class="app-user"><div class="user-avatar">${initials}</div><div><strong>${escapeHtml(name)}</strong><span>Administrador</span></div></div></div>`;
+
+        const notifications = collectNotifications();
+        const readIds = getReadNotificationIds();
+        const unreadNotifications = notifications.filter(item => !readIds.has(item.id));
+        const count = unreadNotifications.length;
+
+        const html = `
+            <div class="app-user-area" data-account-menu-root>
+                <button type="button" class="notification app-header-button" data-notification-toggle aria-label="Notificações" aria-expanded="false">
+                    ${svg("bell", "menu-icon")}
+                    ${count ? `<span class="notification-badge">${count > 9 ? "9+" : count}</span>` : ""}
+                </button>
+
+                <button type="button" class="app-user app-account-toggle" data-account-toggle aria-label="Abrir menu da conta" aria-expanded="false">
+                    <div class="user-avatar">${escapeHtml(initials)}</div>
+                    <div class="app-user-copy"><strong>${escapeHtml(name)}</strong><span>Administrador</span></div>
+                    ${svg("chevron", "account-chevron")}
+                </button>
+
+                <div class="header-popover notification-popover" data-notification-popover aria-hidden="true">
+                    <div class="popover-header">
+                        <div><strong>Notificações</strong><span data-notification-summary>${notifications.length ? (count ? `${count} ${count === 1 ? "nova" : "novas"}` : "Tudo visto") : "Tudo em dia"}</span></div>
+                    </div>
+                    <div class="notification-list">
+                        ${renderNotifications(notifications)}
+                    </div>
+                </div>
+
+                <div class="header-popover account-popover" data-account-popover aria-hidden="true">
+                    <div class="account-summary">
+                        <div class="account-summary-avatar">${escapeHtml(initials)}</div>
+                        <div><strong>${escapeHtml(name)}</strong><span>${escapeHtml(email || "Administrador")}</span></div>
+                    </div>
+                    <div class="account-sync-row">
+                        <span class="account-sync-icon">${svg("cloud", "menu-icon")}</span>
+                        <div><strong data-sync-label>Sincronização ativa</strong><span data-sync-time>${escapeHtml(formatSyncTime())}</span></div>
+                    </div>
+                    <nav class="account-menu-links">
+                        <button type="button" data-account-action="profile">${svg("user", "menu-icon")}<span>Meu perfil</span></button>
+                        <button type="button" data-account-action="settings">${svg("settings", "menu-icon")}<span>Configurações</span></button>
+                        <button type="button" data-account-action="backup">${svg("save", "menu-icon")}<span>Fazer backup agora</span></button>
+                        <button type="button" class="account-logout" data-account-action="logout">${svg("logout", "menu-icon")}<span>Sair</span></button>
+                    </nav>
+                </div>
+            </div>`;
+
         if (existing) existing.outerHTML = html;
-        else if (!header.querySelector(".app-user-area")) header.insertAdjacentHTML("beforeend", html);
+        else header.insertAdjacentHTML("beforeend", html);
+
         const oldUser = document.getElementById("nomeUsuarioLogado");
         if (oldUser) oldUser.textContent = name;
+        bindAccountHeader(header.querySelector("[data-account-menu-root]"));
+    }
+
+    function getNotificationStorageKey() {
+        const userId = sessionStorage.getItem("usuarioId") || sessionStorage.getItem("usuarioEmail") || "local";
+        return `marcelinoNotificationsRead:${userId}`;
+    }
+
+    function getReadNotificationIds() {
+        try {
+            const raw = localStorage.getItem(getNotificationStorageKey());
+            const values = raw ? JSON.parse(raw) : [];
+            return new Set(Array.isArray(values) ? values.map(String) : []);
+        } catch (_) {
+            return new Set();
+        }
+    }
+
+    function markNotificationsAsRead(items) {
+        if (!Array.isArray(items) || !items.length) return;
+        const read = getReadNotificationIds();
+        items.forEach(item => { if (item && item.id) read.add(String(item.id)); });
+
+        // Mantém somente IDs das notificações ainda relevantes + uma pequena margem histórica.
+        const currentIds = new Set(collectNotifications().map(item => String(item.id)));
+        const compact = [...read].filter(id => currentIds.has(id)).slice(-100);
+        try { localStorage.setItem(getNotificationStorageKey(), JSON.stringify(compact)); } catch (_) {}
+    }
+
+    function clearNotificationBadge(root) {
+        if (!root) return;
+        const badge = root.querySelector(".notification-badge");
+        if (badge) badge.remove();
+        const summary = root.querySelector("[data-notification-summary]");
+        const current = collectNotifications();
+        if (summary) summary.textContent = current.length ? "Tudo visto" : "Tudo em dia";
+    }
+
+    function collectNotifications() {
+        let banco;
+        try { banco = typeof obterBanco === "function" ? obterBanco() : null; } catch (_) { banco = null; }
+        if (!banco) return [];
+        const items = [];
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const pendentes = (Array.isArray(banco.vendas) ? banco.vendas : []).filter(v => v && v.status !== "cancelada" && v.statusPagamento !== "paga" && Number(v.valorPendente || 0) > 0);
+        if (pendentes.length) {
+            const total = pendentes.reduce((sum, v) => sum + Number(v.valorPendente || 0), 0);
+            items.push({ id: `pending:${pendentes.map(v => `${v.id || v.comanda || "x"}:${Number(v.valorPendente || 0).toFixed(2)}`).sort().join("|")}`, type: "warning", icon: "wallet", title: `${pendentes.length} ${pendentes.length === 1 ? "venda aguardando" : "vendas aguardando"} pagamento`, text: `Total pendente: ${formatCurrency(total)}`, href: "vendas.html" });
+        }
+
+        const lowStock = (Array.isArray(banco.produtos) ? banco.produtos : []).filter(p => Number(p.quantidade || 0) <= Number(p.estoqueMinimo || 0));
+        if (lowStock.length) items.push({ id: `stock:${lowStock.map(p => `${p.id || p.codigo || p.nome || "x"}:${Number(p.quantidade || 0)}`).sort().join("|")}`, type: "danger", icon: "package", title: `${lowStock.length} ${lowStock.length === 1 ? "produto com" : "produtos com"} estoque baixo`, text: "Confira os itens que precisam de reposição.", href: "produtos.html" });
+
+        const pedidos = (Array.isArray(banco.pedidos) ? banco.pedidos : []).filter(p => p && String(p.status || "").toLowerCase().includes("produção"));
+        let atrasados = 0, proximos = 0;
+        pedidos.forEach(p => {
+            if (!p.prazo) return;
+            const due = parseLocalDate(p.prazo);
+            if (!due) return;
+            const diff = Math.ceil((due - today) / 86400000);
+            if (diff < 0) atrasados += 1;
+            else if (diff <= 2) proximos += 1;
+        });
+        if (atrasados) items.push({ id: `orders-overdue:${pedidos.filter(p => { const d = p.prazo ? parseLocalDate(p.prazo) : null; return d && Math.ceil((d - today) / 86400000) < 0; }).map(p => `${p.id || p.numero || p.titulo || "x"}:${p.prazo || ""}`).sort().join("|")}`, type: "danger", icon: "alert", title: `${atrasados} ${atrasados === 1 ? "pedido atrasado" : "pedidos atrasados"}`, text: "Existem pedidos em produção com prazo vencido.", href: "pedidos.html" });
+        if (proximos) items.push({ id: `orders-due:${pedidos.filter(p => { const d = p.prazo ? parseLocalDate(p.prazo) : null; if (!d) return false; const diff = Math.ceil((d - today) / 86400000); return diff >= 0 && diff <= 2; }).map(p => `${p.id || p.numero || p.titulo || "x"}:${p.prazo || ""}`).sort().join("|")}`, type: "warning", icon: "clock", title: `${proximos} ${proximos === 1 ? "pedido próximo" : "pedidos próximos"} do prazo`, text: "Prazo de entrega em até 2 dias.", href: "pedidos.html" });
+        if (pedidos.length && !atrasados && !proximos) items.push({ id: `orders-active:${pedidos.map(p => `${p.id || p.numero || p.titulo || "x"}:${p.status || ""}:${p.prazo || ""}`).sort().join("|")}`, type: "info", icon: "orders", title: `${pedidos.length} ${pedidos.length === 1 ? "pedido em produção" : "pedidos em produção"}`, text: "Acompanhe o andamento dos pedidos ativos.", href: "pedidos.html" });
+        return items;
+    }
+
+    function parseLocalDate(value) {
+        if (!value) return null;
+        const str = String(value);
+        let d;
+        if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+            const [y,m,day] = str.split("-").map(Number); d = new Date(y,m-1,day);
+        } else if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) {
+            const [day,m,y] = str.split("/").map(Number); d = new Date(y,m-1,day);
+        } else d = new Date(str);
+        return Number.isNaN(d.getTime()) ? null : d;
+    }
+
+    function formatCurrency(value) {
+        return Number(value || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function renderNotifications(items) {
+        if (!items.length) return `<div class="notification-empty">${svg("check", "notification-empty-icon")}<strong>Nenhuma pendência importante</strong><span>Estoque, recebimentos e pedidos estão em dia.</span></div>`;
+        return items.map(item => `<a class="notification-item notification-${item.type}" href="${item.href}"><span class="notification-item-icon">${svg(item.icon, "menu-icon")}</span><span><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.text)}</small></span></a>`).join("");
+    }
+
+    function formatSyncTime() {
+        const raw = sessionStorage.getItem("marcelinoLastSyncAt");
+        if (!raw) return navigator.onLine ? "Conectado ao banco online" : "Modo offline";
+        const date = new Date(raw);
+        if (Number.isNaN(date.getTime())) return "Sincronização ativa";
+        return `Última sincronização: ${date.toLocaleTimeString("pt-BR", {hour:"2-digit", minute:"2-digit"})}`;
+    }
+
+    function bindAccountHeader(root) {
+        if (!root) return;
+        const accountButton = root.querySelector("[data-account-toggle]");
+        const notificationButton = root.querySelector("[data-notification-toggle]");
+        const account = root.querySelector("[data-account-popover]");
+        const notifications = root.querySelector("[data-notification-popover]");
+
+        function setOpen(panel, button, open) {
+            panel.classList.toggle("is-open", open);
+            panel.setAttribute("aria-hidden", open ? "false" : "true");
+            button.setAttribute("aria-expanded", open ? "true" : "false");
+        }
+        function closeAll() { setOpen(account, accountButton, false); setOpen(notifications, notificationButton, false); }
+        accountButton.addEventListener("click", e => { e.stopPropagation(); const open = !account.classList.contains("is-open"); closeAll(); setOpen(account, accountButton, open); });
+        notificationButton.addEventListener("click", e => {
+            e.stopPropagation();
+            const open = !notifications.classList.contains("is-open");
+            closeAll();
+            setOpen(notifications, notificationButton, open);
+            if (open) {
+                // Visualizar a central marca as notificações atuais como lidas.
+                markNotificationsAsRead(collectNotifications());
+                clearNotificationBadge(root);
+            }
+        });
+        document.addEventListener("click", e => { if (!root.contains(e.target)) closeAll(); });
+        document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); });
+
+        root.querySelectorAll("[data-account-action]").forEach(button => button.addEventListener("click", async () => {
+            const action = button.dataset.accountAction;
+            closeAll();
+            if (action === "settings") { location.href = "configuracoes.html"; return; }
+            if (action === "profile") { showProfileDialog(); return; }
+            if (action === "backup") { exportQuickBackup(); return; }
+            if (action === "logout") { await logoutFromHeader(); }
+        }));
+    }
+
+    function showProfileDialog() {
+        const name = sessionStorage.getItem("usuarioNome") || "Usuário";
+        const email = sessionStorage.getItem("usuarioEmail") || "Não informado";
+        const login = sessionStorage.getItem("usuarioLogin") || "-";
+        if (window.AppPopup && typeof AppPopup.alert === "function") {
+            AppPopup.alert(`Perfil da conta\n\nNome: ${name}\nE-mail: ${email}\nUsuário: ${login}\nPerfil: Administrador`);
+        } else {
+            window.alert(`Perfil da conta\n\nNome: ${name}\nE-mail: ${email}\nUsuário: ${login}\nPerfil: Administrador`);
+        }
+    }
+
+    function exportQuickBackup() {
+        try {
+            const banco = typeof obterBanco === "function" ? obterBanco() : {};
+            const data = new Date();
+            const stamp = data.toISOString().slice(0, 10);
+            const blob = new Blob([JSON.stringify(banco, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url; a.download = `backup-marcelino-${stamp}.json`;
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            localStorage.setItem("marcelinoLastBackupAt", data.toISOString());
+            if (window.AppPopup && typeof AppPopup.alert === "function") AppPopup.alert("Backup criado com sucesso!");
+        } catch (error) {
+            console.error(error);
+            if (window.AppPopup && typeof AppPopup.alert === "function") AppPopup.alert("Não foi possível criar o backup.");
+        }
+    }
+
+    async function logoutFromHeader() {
+        let allowed = true;
+        if (window.AppPopup && typeof AppPopup.confirm === "function") allowed = await AppPopup.confirm("Deseja sair da sua conta?");
+        if (!allowed) return;
+        try { if (window.MarcelinoOnline) await window.MarcelinoOnline.logout(); } catch (error) { console.warn(error); }
+        ["usuarioLogado", "usuarioId", "usuarioNome", "usuarioLogin", "usuarioEmail", "marcelinoOnlineSincronizado", "marcelinoBootstrapReload"].forEach(k => sessionStorage.removeItem(k));
+        location.replace("login.html");
     }
 
     function escapeHtml(value) {
@@ -170,7 +404,22 @@
             document.body.appendChild(overlay);
         }
 
+        // Garante apenas UM botão de menu no cabeçalho.
+        // Algumas páginas antigas possuíam um botão próprio (.mobile-menu-button),
+        // enquanto o ui.js também criava .mobile-menu-toggle, causando duplicidade.
+        const legacyButtons = Array.from(header.querySelectorAll('.mobile-menu-button'));
         let button = header.querySelector('.mobile-menu-toggle');
+
+        if (!button && legacyButtons.length) {
+            button = legacyButtons.shift();
+            button.classList.remove('mobile-menu-button');
+            button.classList.add('mobile-menu-toggle');
+            button.removeAttribute('id');
+            button.innerHTML = svg('menu', 'menu-icon');
+        }
+
+        legacyButtons.forEach(item => item.remove());
+
         if (!button) {
             button = document.createElement('button');
             button.type = 'button';
@@ -213,25 +462,78 @@
         });
     }
 
-    async function iniciarUI() {
-        if (!(await protectPage())) return;
+    function refreshHeaderSyncStatus() {
+        const label = document.querySelector("[data-sync-label]");
+        const time = document.querySelector("[data-sync-time]");
+        if (label) label.textContent = navigator.onLine ? "Sincronização ativa" : "Modo offline";
+        if (time) time.textContent = formatSyncTime();
+    }
 
-        const iniciar = function () {
+    async function iniciarUI() {
+        const prepararVisual = function () {
             mountSidebar();
             mountUserHeader();
             mountMobileNavigation();
             modernizeIcons();
             cleanLegacyText();
+
+            // Libera a primeira pintura apenas depois de trocar todos os ícones
+            // legados pelos SVGs modernos. Isso elimina o "piscar" de emojis/
+            // ícones antigos durante a navegação entre páginas.
+            // Como ui-preparing já está no <html> antes da primeira pintura,
+            // podemos liberar assim que todos os elementos forem substituídos.
+            document.documentElement.classList.remove("ui-preparing");
+            document.documentElement.classList.add("ui-ready");
+        };
+
+        const iniciarRecursos = function () {
             const observer = new MutationObserver(() => modernizeIcons());
             observer.observe(document.body, { childList: true, subtree: true });
 
+            function existeInteracaoEmAndamento() {
+                const seletoresAbertos = [
+                    ".modal.active", ".modal.show", ".modal.open",
+                    ".modal-cash.active", ".modal-cash.show", ".modal-cash.open",
+                    ".sale-detail-modal.active", ".sale-detail-modal.show", ".sale-detail-modal.open",
+                    ".sale-record-modal.active", ".sale-record-modal.show", ".sale-record-modal.open",
+                    ".payment-receipt-modal.active", ".payment-receipt-modal.show", ".payment-receipt-modal.open",
+                    ".modal-overlay.active", ".modal-overlay.show", ".modal-overlay.open",
+                    "[aria-modal=\"true\"]:not([aria-hidden=\"true\"])",
+                    "[role=\"dialog\"]:not([aria-hidden=\"true\"])",
+                    "[class*=\"modal\"][aria-hidden=\"false\"]"
+                ];
+                if (document.querySelector(seletoresAbertos.join(","))) return true;
+                if (document.body.classList.contains("modal-open")) return true;
+                const ativo = document.activeElement;
+                if (ativo && ativo.closest && ativo.closest("form")) {
+                    const tag = String(ativo.tagName || "").toLowerCase();
+                    if (["input", "textarea", "select"].includes(tag)) return true;
+                }
+                return false;
+            }
+
             window.addEventListener("marcelino:data-synced", function (event) {
                 if (!event.detail || event.detail.source !== "remote") return;
-                const modalAberto = document.querySelector(".modal.show, .sale-detail-modal.show, .modal-overlay.show");
-                if (!modalAberto && document.visibilityState === "visible") {
-                    location.reload();
+                if (document.visibilityState !== "visible") return;
+                if (existeInteracaoEmAndamento()) {
+                    console.info("Sincronização recebida durante edição: recarregamento adiado para preservar o formulário.");
+                    return;
                 }
-            }, { once: true });
+                location.reload();
+            });
+
+            window.addEventListener("marcelino:online-ready", function () {
+                sessionStorage.setItem("marcelinoLastSyncAt", new Date().toISOString());
+                refreshHeaderSyncStatus();
+            });
+
+            window.addEventListener("marcelino:data-synced", function () {
+                sessionStorage.setItem("marcelinoLastSyncAt", new Date().toISOString());
+                refreshHeaderSyncStatus();
+            });
+
+            window.addEventListener("online", refreshHeaderSyncStatus);
+            window.addEventListener("offline", refreshHeaderSyncStatus);
 
             window.addEventListener("marcelino:sync-error", function () {
                 let toast = document.querySelector(".online-sync-toast");
@@ -245,8 +547,19 @@
             });
         };
 
-        if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar, { once: true });
-        else iniciar();
+        const boot = async function () {
+            // A camada visual é montada antes da consulta remota de autenticação.
+            // Assim a página nunca mostra os ícones HTML antigos enquanto espera a rede.
+            prepararVisual();
+            if (!(await protectPage())) return;
+            // A autenticação online pode preencher nome/e-mail depois da primeira
+            // montagem visual. Remonta o cabeçalho para mostrar os dados reais.
+            mountUserHeader();
+            iniciarRecursos();
+        };
+
+        if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });
+        else boot();
     }
 
     iniciarUI();

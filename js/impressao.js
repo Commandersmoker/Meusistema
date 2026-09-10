@@ -18,7 +18,7 @@ function imprimirComanda(vendaId) {
 
     if (!venda) {
 
-        alert(
+        AppPopup.alert(
             "Venda não encontrada."
         );
 
@@ -43,7 +43,7 @@ function imprimirComanda(vendaId) {
 
     if (!janela) {
 
-        alert(
+        AppPopup.alert(
             "Permita pop-ups para imprimir a comanda."
         );
 

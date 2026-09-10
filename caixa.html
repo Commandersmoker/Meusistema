@@ -1,269 +1,225 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+
+<html class="ui-preparing" lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Caixa | Marcelino Bordados</title>
-    <link rel="stylesheet" href="css/style.css?v=18">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Caixa | Marcelino Bordados</title>
+<link href="css/style.css?v=32" rel="stylesheet"/>
 </head>
 <body>
 <div class="app">
-
-    <aside class="sidebar">
-        <div class="sidebar-logo">
-            <h2>Marcelino</h2>
-            <span>Bordados</span>
-        </div>
-
-        <nav>
-            <a href="index.html" class="menu-item"><span>⌂</span>Dashboard</a>
-            <a href="vendas.html" class="menu-item"><span>🛒</span>Vendas</a>
-            <a href="produtos.html" class="menu-item"><span>📦</span>Produtos</a>
-            <a href="clientes.html" class="menu-item"><span>👥</span>Clientes</a>
-            <a href="caixa.html" class="menu-item active"><span>💰</span>Caixa</a>
-            <a href="relatorios.html" class="menu-item"><span>📊</span>Relatórios</a>
-            <a href="configuracoes.html" class="menu-item"><span>⚙️</span>Configurações</a>
-            <a href="backup.html" class="menu-item"><span>🗄️</span>Backup</a>
-        </nav>
-
-        <div class="sidebar-bottom">
-            <a href="#" class="menu-item logout" onclick="sairSistema(event)">
-                <span>↪</span>Sair
-            </a>
-            <div class="system-version">Versão 1.7.0</div>
-        </div>
-    </aside>
-
-    <main class="main-content cash-page">
-        <header class="page-header cash-page-header">
-            <div class="page-header-title">
-                <h1>Fluxo de Caixa</h1>
-                <p>Controle de entradas, saídas e movimentações financeiras</p>
-            </div>
-
-            <div class="cash-header-buttons">
-                <button class="btn-cash-entry" type="button" onclick="abrirModalMovimentacao('entrada')">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M12 5v14M5 12h14"></path>
-                    </svg>
-                    <span>Entrada</span>
-                </button>
-
-                <button class="btn-cash-exit" type="button" onclick="abrirModalMovimentacao('saida')">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M5 12h14"></path>
-                    </svg>
-                    <span>Saída</span>
-                </button>
-            </div>
-        </header>
-
-        <section class="cash-summary cash-summary-modern">
-            <article class="summary-card">
-                <div class="summary-icon saldo-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <rect x="3" y="5" width="18" height="14" rx="3"></rect>
-                        <path d="M3 9h18"></path>
-                        <path d="M16 14h2"></path>
-                    </svg>
-                </div>
-                <div>
-                    <span>Saldo atual</span>
-                    <strong id="saldoAtual">R$ 0,00</strong>
-                    <small>Saldo disponível</small>
-                </div>
-            </article>
-
-            <article class="summary-card">
-                <div class="summary-icon entrada-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M4 19V5"></path>
-                        <path d="M4 19h16"></path>
-                        <path d="m7 15 4-4 3 3 5-7"></path>
-                    </svg>
-                </div>
-                <div>
-                    <span>Total de entradas</span>
-                    <strong id="totalEntradas">R$ 0,00</strong>
-                    <small>Valores recebidos</small>
-                </div>
-            </article>
-
-            <article class="summary-card">
-                <div class="summary-icon saida-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M4 5v14"></path>
-                        <path d="M4 19h16"></path>
-                        <path d="m7 9 4 4 3-3 5 7"></path>
-                    </svg>
-                </div>
-                <div>
-                    <span>Total de saídas</span>
-                    <strong id="totalSaidas">R$ 0,00</strong>
-                    <small>Despesas registradas</small>
-                </div>
-            </article>
-
-            <article class="summary-card">
-                <div class="summary-icon venda-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="9" cy="20" r="1"></circle>
-                        <circle cx="18" cy="20" r="1"></circle>
-                        <path d="M3 4h2l2.4 10.3a2 2 0 0 0 2 1.55H18a2 2 0 0 0 1.95-1.55L21 8H6"></path>
-                    </svg>
-                </div>
-                <div>
-                    <span>Vendas</span>
-                    <strong id="totalVendas">R$ 0,00</strong>
-                    <small>Vendas realizadas</small>
-                </div>
-            </article>
-        </section>
-
-        <section class="cash-section card cash-movements-card">
-            <div class="section-heading cash-section-heading">
-                <div>
-                    <h2>Movimentações</h2>
-                    <p>Consulte o histórico de entradas e saídas do caixa</p>
-                </div>
-                <div class="movement-legend" aria-label="Legenda">
-                    <span class="legend-item legend-entry"><i></i>Entrada</span>
-                    <span class="legend-item legend-exit"><i></i>Saída</span>
-                </div>
-            </div>
-
-            <div class="cash-filter-bar">
-                <div class="cash-filter">
-                    <label for="dataInicial">Data inicial</label>
-                    <input type="date" id="dataInicial" onchange="listarMovimentacoes()">
-                </div>
-
-                <div class="cash-filter">
-                    <label for="dataFinal">Data final</label>
-                    <input type="date" id="dataFinal" onchange="listarMovimentacoes()">
-                </div>
-
-                <div class="cash-filter">
-                    <label for="filtroTipo">Tipo</label>
-                    <select id="filtroTipo" onchange="listarMovimentacoes()">
-                        <option value="">Todos</option>
-                        <option value="entrada">Entradas</option>
-                        <option value="saida">Saídas</option>
-                    </select>
-                </div>
-
-                <div class="cash-filter">
-                    <label for="filtroPagamento">Pagamento</label>
-                    <select id="filtroPagamento" onchange="listarMovimentacoes()">
-                        <option value="">Todos</option>
-                        <option value="PIX">PIX</option>
-                        <option value="Dinheiro">Dinheiro</option>
-                        <option value="Débito">Débito</option>
-                        <option value="Crédito">Crédito</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="cash-table-wrapper">
-                <table class="cash-table">
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Descrição</th>
-                            <th>Categoria</th>
-                            <th>Pagamento</th>
-                            <th>Tipo</th>
-                            <th>Valor</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="listaCaixa">
-                        <tr>
-                            <td colspan="7" class="cash-empty">
-                                <div class="cash-empty-state">
-                                    <div class="cash-empty-icon">
-                                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                                            <path d="M4 6h16"></path>
-                                            <path d="M7 3h10"></path>
-                                            <rect x="4" y="6" width="16" height="15" rx="2"></rect>
-                                            <path d="M8 11h8M8 15h5"></path>
-                                        </svg>
-                                    </div>
-                                    <strong>Nenhuma movimentação encontrada</strong>
-                                    <span>As entradas e saídas registradas aparecerão aqui.</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <footer class="page-footer">
-            <span>Marcelino Bordados © 2026</span>
-            <span>Sistema local</span>
-        </footer>
-    </main>
+<aside class="sidebar"><div class="logo"><div class="logo-icon">M</div><div><strong>Marcelino</strong><span>Bordados</span></div></div><nav class="menu"><a class="menu-item" href="index.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><rect height="7" rx="2" width="7" x="3" y="3"></rect><rect height="7" rx="2" width="7" x="14" y="3"></rect><rect height="7" rx="2" width="7" x="3" y="14"></rect><rect height="7" rx="2" width="7" x="14" y="14"></rect></svg><span>Dashboard</span></a><a class="menu-item" href="vendas.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><circle cx="9" cy="20" r="1"></circle><circle cx="19" cy="20" r="1"></circle><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H6"></path></svg><span>Vendas</span></a><a class="menu-item" href="pedidos.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M9 5h6"></path><path d="M9 9h6"></path><path d="M9 13h4"></path><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"></path><path d="m15 17 2 2 4-4"></path></svg><span>Pedidos</span></a><a class="menu-item" href="produtos.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="m21 8-9-5-9 5 9 5 9-5Z"></path><path d="m3 8 9 5 9-5"></path><path d="M12 13v9"></path><path d="M3 8v9l9 5 9-5V8"></path></svg><span>Produtos</span></a><a class="menu-item" href="clientes.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Clientes</span></a><a class="menu-item active" href="caixa.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M20 7V6a2 2 0 0 0-2-2H5a3 3 0 0 0 0 6h15v8a2 2 0 0 1-2 2H5a3 3 0 0 1-3-3V7"></path><path d="M16 14h.01"></path></svg><span>Caixa</span></a><a class="menu-item" href="relatorios.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M3 3v18h18"></path><path d="m7 16 4-5 4 3 5-7"></path></svg><span>Relatórios</span></a><a class="menu-item" href="configuracoes.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.1A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.1A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9c.16.36.4.7.7 1 .3.3.68.46 1.1.5H21v4h-.1a1.7 1.7 0 0 0-1.5.5Z"></path></svg><span>Configurações</span></a><a class="menu-item" href="backup.html"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v6c0 1.7 4 3 9 3s9-1.3 9-3V5"></path><path d="M3 11v6c0 1.7 4 3 9 3s9-1.3 9-3v-6"></path></svg><span>Backup</span></a></nav><div class="sidebar-bottom"><a class="menu-item logout" data-action="logout" href="#"><svg aria-hidden="true" class="menu-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24"><path d="M10 17l5-5-5-5"></path><path d="M15 12H3"></path><path d="M21 19V5a2 2 0 0 0-2-2h-6"></path></svg><span>Sair</span></a><div class="system-version">Versão 3.1.0 Online</div></div></aside>
+<main class="main-content cash-page">
+<header class="page-header cash-page-header">
+<div class="page-header-title">
+<h1>Fluxo de Caixa</h1>
+<p>Controle de entradas, saídas e movimentações financeiras</p>
 </div>
-
-<div id="modalMovimentacao" class="modal-cash">
-    <div class="modal-cash-content">
-        <div class="modal-cash-header">
-            <div>
-                <h2 id="tituloModalMovimentacao">Nova entrada</h2>
-                <p>Registre uma movimentação no caixa.</p>
-            </div>
-            <button class="modal-cash-close" type="button" onclick="fecharModalMovimentacao()" aria-label="Fechar">×</button>
-        </div>
-
-        <form onsubmit="salvarMovimentacao(event)">
-            <input type="hidden" id="tipoMovimentacao">
-
-            <div class="cash-form-group">
-                <label for="descricaoMovimentacao">Descrição *</label>
-                <input type="text" id="descricaoMovimentacao" placeholder="Ex.: Compra de materiais" required>
-            </div>
-
-            <div class="cash-form-row">
-                <div class="cash-form-group">
-                    <label for="valorMovimentacao">Valor *</label>
-                    <input type="number" id="valorMovimentacao" min="0.01" step="0.01" placeholder="0,00" required>
-                </div>
-
-                <div class="cash-form-group">
-                    <label for="categoriaMovimentacao">Categoria</label>
-                    <select id="categoriaMovimentacao">
-                        <option value="Materiais">Materiais</option>
-                        <option value="Fornecedor">Fornecedor</option>
-                        <option value="Transporte">Transporte</option>
-                        <option value="Despesas">Despesas</option>
-                        <option value="Outros">Outros</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="cash-form-group">
-                <label for="pagamentoMovimentacao">Forma de pagamento</label>
-                <select id="pagamentoMovimentacao">
-                    <option value="PIX">PIX</option>
-                    <option value="Dinheiro">Dinheiro</option>
-                    <option value="Débito">Débito</option>
-                    <option value="Crédito">Crédito</option>
-                </select>
-            </div>
-
-            <div class="modal-cash-footer">
-                <button type="button" class="btn-modal-cancel" onclick="fecharModalMovimentacao()">Cancelar</button>
-                <button type="submit" class="btn-modal-save">Salvar movimentação</button>
-            </div>
-        </form>
-    </div>
+<div class="cash-header-buttons">
+<button class="btn-cash-entry" onclick="abrirModalMovimentacao('entrada')" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M12 5v14M5 12h14"></path>
+</svg>
+<span>Entrada</span>
+</button>
+<button class="btn-cash-exit" onclick="abrirModalMovimentacao('saida')" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M5 12h14"></path>
+</svg>
+<span>Saída</span>
+</button>
 </div>
-
-<script src="js/supabase-config.js?v=18"></script>
-<script src="js/online.js?v=18"></script>
-<script src="js/database.js?v=18"></script>
+</header>
+<section class="cash-summary cash-summary-modern">
+<article class="summary-card">
+<div class="summary-icon saldo-icon">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<rect height="14" rx="3" width="18" x="3" y="5"></rect>
+<path d="M3 9h18"></path>
+<path d="M16 14h2"></path>
+</svg>
+</div>
+<div>
+<span>Saldo atual</span>
+<strong id="saldoAtual">R$ 0,00</strong>
+<small>Saldo disponível</small>
+</div>
+</article>
+<article class="summary-card">
+<div class="summary-icon entrada-icon">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M4 19V5"></path>
+<path d="M4 19h16"></path>
+<path d="m7 15 4-4 3 3 5-7"></path>
+</svg>
+</div>
+<div>
+<span>Total de entradas</span>
+<strong id="totalEntradas">R$ 0,00</strong>
+<small>Valores recebidos</small>
+</div>
+</article>
+<article class="summary-card">
+<div class="summary-icon saida-icon">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M4 5v14"></path>
+<path d="M4 19h16"></path>
+<path d="m7 9 4 4 3-3 5 7"></path>
+</svg>
+</div>
+<div>
+<span>Total de saídas</span>
+<strong id="totalSaidas">R$ 0,00</strong>
+<small>Despesas registradas</small>
+</div>
+</article>
+<article class="summary-card">
+<div class="summary-icon venda-icon">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<circle cx="9" cy="20" r="1"></circle>
+<circle cx="18" cy="20" r="1"></circle>
+<path d="M3 4h2l2.4 10.3a2 2 0 0 0 2 1.55H18a2 2 0 0 0 1.95-1.55L21 8H6"></path>
+</svg>
+</div>
+<div>
+<span>Vendas</span>
+<strong id="totalVendas">R$ 0,00</strong>
+<small>Vendas realizadas</small>
+</div>
+</article>
+</section>
+<section class="cash-section card cash-movements-card">
+<div class="section-heading cash-section-heading">
+<div>
+<h2>Movimentações</h2>
+<p>Consulte o histórico de entradas e saídas do caixa</p>
+</div>
+<div aria-label="Legenda" class="movement-legend">
+<span class="legend-item legend-entry"><i></i>Entrada</span>
+<span class="legend-item legend-exit"><i></i>Saída</span>
+</div>
+</div>
+<div class="cash-filter-bar">
+<div class="cash-filter">
+<label for="dataInicial">Data inicial</label>
+<input id="dataInicial" onchange="listarMovimentacoes()" type="date"/>
+</div>
+<div class="cash-filter">
+<label for="dataFinal">Data final</label>
+<input id="dataFinal" onchange="listarMovimentacoes()" type="date"/>
+</div>
+<div class="cash-filter">
+<label for="filtroTipo">Tipo</label>
+<select id="filtroTipo" onchange="listarMovimentacoes()">
+<option value="">Todos</option>
+<option value="entrada">Entradas</option>
+<option value="saida">Saídas</option>
+</select>
+</div>
+<div class="cash-filter">
+<label for="filtroPagamento">Pagamento</label>
+<select id="filtroPagamento" onchange="listarMovimentacoes()">
+<option value="">Todos</option>
+<option value="PIX">PIX</option>
+<option value="Dinheiro">Dinheiro</option>
+<option value="Débito">Débito</option>
+<option value="Crédito">Crédito</option>
+</select>
+</div>
+</div>
+<div class="cash-table-wrapper">
+<table class="cash-table">
+<thead>
+<tr>
+<th>Data</th>
+<th>Descrição</th>
+<th>Categoria</th>
+<th>Pagamento</th>
+<th>Tipo</th>
+<th>Valor</th>
+<th>Ações</th>
+</tr>
+</thead>
+<tbody id="listaCaixa">
+<tr>
+<td class="cash-empty" colspan="7">
+<div class="cash-empty-state">
+<div class="cash-empty-icon">
+<svg aria-hidden="true" viewbox="0 0 24 24">
+<path d="M4 6h16"></path>
+<path d="M7 3h10"></path>
+<rect height="15" rx="2" width="16" x="4" y="6"></rect>
+<path d="M8 11h8M8 15h5"></path>
+</svg>
+</div>
+<strong>Nenhuma movimentação encontrada</strong>
+<span>As entradas e saídas registradas aparecerão aqui.</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<footer class="page-footer">
+<span>Marcelino Bordados © 2026</span>
+<span>Sistema local</span>
+</footer>
+</main>
+</div>
+<div class="modal-cash" id="modalMovimentacao">
+<div class="modal-cash-content">
+<div class="modal-cash-header">
+<div>
+<h2 id="tituloModalMovimentacao">Nova entrada</h2>
+<p>Registre uma movimentação no caixa.</p>
+</div>
+<button aria-label="Fechar" class="modal-cash-close" onclick="fecharModalMovimentacao()" type="button">×</button>
+</div>
+<form onsubmit="salvarMovimentacao(event)">
+<input id="tipoMovimentacao" type="hidden"/>
+<div class="cash-form-group">
+<label for="descricaoMovimentacao">Descrição *</label>
+<input id="descricaoMovimentacao" placeholder="Ex.: Compra de materiais" required="" type="text"/>
+</div>
+<div class="cash-form-row">
+<div class="cash-form-group">
+<label for="valorMovimentacao">Valor *</label>
+<input id="valorMovimentacao" min="0.01" placeholder="0,00" required="" step="0.01" type="number"/>
+</div>
+<div class="cash-form-group">
+<label for="categoriaMovimentacao">Categoria</label>
+<select id="categoriaMovimentacao">
+<option value="Materiais">Materiais</option>
+<option value="Fornecedor">Fornecedor</option>
+<option value="Transporte">Transporte</option>
+<option value="Despesas">Despesas</option>
+<option value="Outros">Outros</option>
+</select>
+</div>
+</div>
+<div class="cash-form-group">
+<label for="pagamentoMovimentacao">Forma de pagamento</label>
+<select id="pagamentoMovimentacao">
+<option value="PIX">PIX</option>
+<option value="Dinheiro">Dinheiro</option>
+<option value="Débito">Débito</option>
+<option value="Crédito">Crédito</option>
+</select>
+</div>
+<div class="modal-cash-footer">
+<button class="btn-modal-cancel" onclick="fecharModalMovimentacao()" type="button">Cancelar</button>
+<button class="btn-modal-save" type="submit">Salvar movimentação</button>
+</div>
+</form>
+</div>
+</div>
+<script src="js/popup.js?v=28"></script>
+<script src="js/supabase-config.js?v=21"></script>
+<script src="js/online.js?v=31"></script>
+<script src="js/database.js?v=21"></script>
 <script src="js/caixa.js"></script>
-<script src="js/ui.js?v=18"></script>
+<script src="js/ui.js?v=32"></script>
 </body>
 </html>

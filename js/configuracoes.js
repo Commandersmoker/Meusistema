@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 importarBackup(arquivo)
                     .then(function () {
 
-                        alert(
+                        AppPopup.alert(
                             "Backup restaurado com sucesso!"
                         );
 
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     })
                     .catch(function (erro) {
 
-                        alert(
+                        AppPopup.alert(
                             erro.message ||
                             "Não foi possível restaurar o backup."
                         );
@@ -264,7 +264,7 @@ function salvarConfiguracoes(
     );
 
 
-    alert(
+    AppPopup.alert(
         "Configurações salvas com sucesso!"
     );
 
@@ -315,10 +315,10 @@ function aplicarCorPrincipal(
    RESETAR CONFIGURAÇÕES
    ================================================== */
 
-function restaurarConfiguracoesPadrao() {
+async function restaurarConfiguracoesPadrao() {
 
     const confirmar =
-        confirm(
+        await AppPopup.confirm(
             "Deseja restaurar as configurações padrão?"
         );
 
@@ -372,7 +372,7 @@ function restaurarConfiguracoesPadrao() {
     );
 
 
-    alert(
+    AppPopup.alert(
         "Configurações restauradas!"
     );
 
@@ -400,7 +400,7 @@ function restaurarBackup(
 
     if (!arquivo) {
 
-        alert(
+        AppPopup.alert(
             "Selecione um arquivo de backup."
         );
 
@@ -412,7 +412,7 @@ function restaurarBackup(
     importarBackup(arquivo)
         .then(function () {
 
-            alert(
+            AppPopup.alert(
                 "Backup restaurado com sucesso!"
             );
 
@@ -421,7 +421,7 @@ function restaurarBackup(
         })
         .catch(function (erro) {
 
-            alert(
+            AppPopup.alert(
                 erro.message ||
                 "Arquivo de backup inválido."
             );

@@ -56,8 +56,9 @@ function exportarBackup() {
 
     URL.revokeObjectURL(url);
 
+    localStorage.setItem("marcelinoLastBackupAt", new Date().toISOString());
 
-    alert(
+    AppPopup.alert(
         "Backup criado com sucesso!"
     );
 
@@ -68,7 +69,7 @@ function exportarBackup() {
    IMPORTAR
 ===================================================== */
 
-function importarBackup(event) {
+async function importarBackup(event) {
 
     const arquivo =
         event.target.files[0];
@@ -80,7 +81,7 @@ function importarBackup(event) {
 
 
     const confirmar =
-        confirm(
+        await AppPopup.confirm(
             "ATENÇÃO!\n\n" +
             "Restaurar este backup irá substituir " +
             "os dados atuais do sistema.\n\n" +
@@ -155,7 +156,7 @@ function importarBackup(event) {
             salvarBanco(banco);
 
 
-            alert(
+            AppPopup.alert(
                 "Backup restaurado com sucesso!"
             );
 
@@ -167,7 +168,7 @@ function importarBackup(event) {
 
             console.error(erro);
 
-            alert(
+            AppPopup.alert(
                 "Não foi possível restaurar o backup."
             );
 

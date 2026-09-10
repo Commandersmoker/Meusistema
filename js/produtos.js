@@ -59,7 +59,7 @@ function abrirModalProduto(id = null) {
 
         if (!produto) {
 
-            alert("Produto não encontrado.");
+            AppPopup.alert("Produto não encontrado.");
 
             return;
 
@@ -221,7 +221,7 @@ function salvarProduto(event) {
 
     if (!codigo || !nome) {
 
-        alert(
+        AppPopup.alert(
             "Preencha o código e o nome."
         );
 
@@ -232,7 +232,7 @@ function salvarProduto(event) {
 
     if (custo < 0 || preco < 0) {
 
-        alert(
+        AppPopup.alert(
             "Os valores não podem ser negativos."
         );
 
@@ -261,7 +261,7 @@ function salvarProduto(event) {
 
     if (codigoExistente) {
 
-        alert(
+        AppPopup.alert(
             "Já existe um produto com esse código."
         );
 
@@ -357,7 +357,7 @@ function salvarProduto(event) {
 
         if (indice === -1) {
 
-            alert(
+            AppPopup.alert(
                 "Produto não encontrado."
             );
 
@@ -410,7 +410,7 @@ function salvarProduto(event) {
     listarHistorico();
 
 
-    alert(
+    AppPopup.alert(
         "Produto salvo com sucesso!"
     );
 
@@ -703,7 +703,7 @@ function abrirModalMovimentacao(id) {
 
     if (!produto) {
 
-        alert(
+        AppPopup.alert(
             "Produto não encontrado."
         );
 
@@ -805,7 +805,7 @@ function salvarMovimentacao(event) {
 
     if (!produto) {
 
-        alert(
+        AppPopup.alert(
             "Produto não encontrado."
         );
 
@@ -816,7 +816,7 @@ function salvarMovimentacao(event) {
 
     if (quantidade <= 0) {
 
-        alert(
+        AppPopup.alert(
             "Informe uma quantidade válida."
         );
 
@@ -838,7 +838,7 @@ function salvarMovimentacao(event) {
             Number(produto.quantidade)
         ) {
 
-            alert(
+            AppPopup.alert(
                 `Estoque insuficiente.\n\nDisponível: ${produto.quantidade}`
             );
 
@@ -908,7 +908,7 @@ function salvarMovimentacao(event) {
     listarHistorico();
 
 
-    alert(
+    AppPopup.alert(
         "Estoque atualizado com sucesso!"
     );
 
@@ -921,7 +921,7 @@ function salvarMovimentacao(event) {
 ==================================================
 */
 
-function excluirProduto(id) {
+async function excluirProduto(id) {
 
     const banco =
         obterBanco();
@@ -941,7 +941,7 @@ function excluirProduto(id) {
 
 
     const confirmar =
-        confirm(
+        await AppPopup.confirm(
             `Deseja realmente excluir "${produto.nome}"?`
         );
 
@@ -1201,7 +1201,7 @@ function listarHistorico() {
 ==================================================
 */
 
-function excluirMovimentacaoEstoque(idMovimentacao) {
+async function excluirMovimentacaoEstoque(idMovimentacao) {
 
     const banco = obterBanco();
 
@@ -1210,13 +1210,13 @@ function excluirMovimentacaoEstoque(idMovimentacao) {
     );
 
     if (indice === -1) {
-        alert("Movimentação não encontrada.");
+        AppPopup.alert("Movimentação não encontrada.");
         return;
     }
 
     const movimento = banco.estoqueMovimentacoes[indice];
 
-    const confirmar = confirm(
+    const confirmar = await AppPopup.confirm(
         `Excluir esta movimentação do histórico?\n\n` +
         `Produto: ${movimento.produto || "-"}\n` +
         `Tipo: ${movimento.tipo === "entrada" ? "Entrada" : "Saída"}\n` +

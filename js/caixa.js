@@ -476,7 +476,7 @@ function salvarMovimentacao(event) {
 
     if (!descricao) {
 
-        alert(
+        AppPopup.alert(
             "Informe uma descrição."
         );
 
@@ -487,7 +487,7 @@ function salvarMovimentacao(event) {
 
     if (!valor || valor <= 0) {
 
-        alert(
+        AppPopup.alert(
             "Informe um valor válido."
         );
 
@@ -535,7 +535,7 @@ function salvarMovimentacao(event) {
     listarMovimentacoes();
 
 
-    alert(
+    AppPopup.alert(
         tipo === "entrada"
             ? "Entrada registrada com sucesso!"
             : "Saída registrada com sucesso!"
@@ -548,7 +548,7 @@ function salvarMovimentacao(event) {
 // EXCLUIR MOVIMENTAÇÃO
 // =========================================
 
-function excluirMovimentacao(id) {
+async function excluirMovimentacao(id) {
 
     banco = obterBanco();
 
@@ -567,7 +567,7 @@ function excluirMovimentacao(id) {
 
     if (movimentacao.vendaId) {
 
-        alert(
+        AppPopup.alert(
             "Movimentações geradas por vendas não podem ser excluídas por aqui."
         );
 
@@ -576,7 +576,7 @@ function excluirMovimentacao(id) {
     }
 
 
-    const confirmar = confirm(
+    const confirmar = await AppPopup.confirm(
 
         `Excluir esta movimentação?\n\n` +
 
