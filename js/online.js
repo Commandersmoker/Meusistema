@@ -24,6 +24,21 @@
     let saveQueue = Promise.resolve();
     let syncTimer = null;
 
+    function registrarVerificacaoBemSucedida(origem = "server") {
+        const now = new Date().toISOString();
+        sessionStorage.setItem("marcelinoLastCheckAt", now);
+        sessionStorage.setItem("marcelinoSyncState", "online");
+        window.dispatchEvent(new CustomEvent("marcelino:sync-heartbeat", {
+            detail: { at: now, source: origem }
+        }));
+        return now;
+    }
+
+    function registrarFalhaSincronizacao(error) {
+        sessionStorage.setItem("marcelinoSyncState", "error");
+        window.dispatchEvent(new CustomEvent("marcelino:sync-error", { detail: { error } }));
+    }
+
     function currentPage() {
         return (location.pathname.split("/").pop() || "index.html").toLowerCase();
     }
@@ -176,6 +191,7 @@
             .eq("user_id", userId)
             .maybeSingle();
         if (error) throw error;
+        registrarVerificacaoBemSucedida("fetch");
         return data || null;
     }
 
@@ -191,6 +207,7 @@
         if (error) throw error;
         lastRemoteUpdatedAt = now;
         sessionStorage.setItem("marcelinoLastSyncAt", now);
+        registrarVerificacaoBemSucedida("upload");
         return safe;
     }
 
@@ -272,12 +289,12 @@
         if (syncTimer) return;
         syncTimer = setInterval(() => {
             if (document.visibilityState === "visible") {
-                syncFromServer({ reloadSuggested: false }).catch(console.warn);
+                syncFromServer({ reloadSuggested: false }).catch(error => { console.warn(error); registrarFalhaSincronizacao(error); });
             }
         }, SYNC_INTERVAL);
 
         window.addEventListener("focus", () => {
-            syncFromServer({ reloadSuggested: false }).catch(console.warn);
+            syncFromServer({ reloadSuggested: false }).catch(error => { console.warn(error); registrarFalhaSincronizacao(error); });
         });
     }
 
@@ -291,7 +308,7 @@
             .then(() => uploadDatabase(user.id, snapshot))
             .catch(error => {
                 console.error("Erro ao sincronizar dados com Supabase:", error);
-                window.dispatchEvent(new CustomEvent("marcelino:sync-error", { detail: { error } }));
+                registrarFalhaSincronizacao(error);
             });
         await saveQueue;
         localStorage.removeItem(dirtyKey(user.id));

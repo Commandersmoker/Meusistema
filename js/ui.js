@@ -88,7 +88,7 @@
             <nav class="menu">${links}</nav>
             <div class="sidebar-bottom">
                 <a href="#" class="menu-item logout" data-action="logout">${svg("logout")}<span>Sair</span></a>
-                <div class="system-version">Versão 3.1.0 Online</div>
+                <div class="system-version">Versão 3.3.0 Online</div>
             </div>`;
     }
 
@@ -266,11 +266,21 @@
     }
 
     function formatSyncTime() {
-        const raw = sessionStorage.getItem("marcelinoLastSyncAt");
-        if (!raw) return navigator.onLine ? "Conectado ao banco online" : "Modo offline";
+        const state = sessionStorage.getItem("marcelinoSyncState");
+        if (!navigator.onLine) return "Modo offline";
+        if (state === "error") return "Falha na sincronização";
+
+        const raw = sessionStorage.getItem("marcelinoLastCheckAt") || sessionStorage.getItem("marcelinoLastSyncAt");
+        if (!raw) return "Conectado ao banco online";
+
         const date = new Date(raw);
         if (Number.isNaN(date.getTime())) return "Sincronização ativa";
-        return `Última sincronização: ${date.toLocaleTimeString("pt-BR", {hour:"2-digit", minute:"2-digit"})}`;
+
+        const diffSeconds = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+        if (diffSeconds < 45) return "Sincronizado agora";
+        const minutes = Math.floor(diffSeconds / 60);
+        if (minutes < 60) return `Última verificação: há ${minutes} min`;
+        return `Última verificação: ${date.toLocaleTimeString("pt-BR", {hour:"2-digit", minute:"2-digit"})}`;
     }
 
     function bindAccountHeader(root) {
@@ -465,7 +475,13 @@
     function refreshHeaderSyncStatus() {
         const label = document.querySelector("[data-sync-label]");
         const time = document.querySelector("[data-sync-time]");
-        if (label) label.textContent = navigator.onLine ? "Sincronização ativa" : "Modo offline";
+        const state = sessionStorage.getItem("marcelinoSyncState");
+
+        if (label) {
+            if (!navigator.onLine) label.textContent = "Modo offline";
+            else if (state === "error") label.textContent = "Problema de sincronização";
+            else label.textContent = "Sincronização ativa";
+        }
         if (time) time.textContent = formatSyncTime();
     }
 
@@ -523,12 +539,25 @@
             });
 
             window.addEventListener("marcelino:online-ready", function () {
-                sessionStorage.setItem("marcelinoLastSyncAt", new Date().toISOString());
+                const now = new Date().toISOString();
+                sessionStorage.setItem("marcelinoLastCheckAt", now);
+                sessionStorage.setItem("marcelinoSyncState", "online");
                 refreshHeaderSyncStatus();
             });
 
             window.addEventListener("marcelino:data-synced", function () {
-                sessionStorage.setItem("marcelinoLastSyncAt", new Date().toISOString());
+                const now = new Date().toISOString();
+                sessionStorage.setItem("marcelinoLastSyncAt", now);
+                sessionStorage.setItem("marcelinoLastCheckAt", now);
+                sessionStorage.setItem("marcelinoSyncState", "online");
+                refreshHeaderSyncStatus();
+            });
+
+            window.addEventListener("marcelino:sync-heartbeat", function (event) {
+                if (event.detail && event.detail.at) {
+                    sessionStorage.setItem("marcelinoLastCheckAt", event.detail.at);
+                }
+                sessionStorage.setItem("marcelinoSyncState", "online");
                 refreshHeaderSyncStatus();
             });
 
@@ -536,6 +565,8 @@
             window.addEventListener("offline", refreshHeaderSyncStatus);
 
             window.addEventListener("marcelino:sync-error", function () {
+                sessionStorage.setItem("marcelinoSyncState", "error");
+                refreshHeaderSyncStatus();
                 let toast = document.querySelector(".online-sync-toast");
                 if (!toast) {
                     toast = document.createElement("div");
@@ -545,6 +576,10 @@
                 toast.textContent = "Sem conexão com o banco online. As alterações ficaram salvas neste dispositivo e serão reenviadas quando a conexão voltar.";
                 setTimeout(() => toast.remove(), 7000);
             });
+
+            // Mantém o texto relativo ("Sincronizado agora", "há 1 min" etc.) atualizado
+            // mesmo quando nenhuma nova alteração de dados foi recebida.
+            setInterval(refreshHeaderSyncStatus, 15000);
         };
 
         const boot = async function () {
